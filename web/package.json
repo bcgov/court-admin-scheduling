@@ -14,7 +14,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.4.2",
     "@fortawesome/vue-fontawesome": "^2.0.10",
     "@types/underscore": "^1.11.12",
-    "axios": "^0.21.4",
+    "axios": "^0.28.0",
     "axios-auth-refresh": "^3.3.6",
     "bootstrap": "^4.6.2",
     "bootstrap-vue": "^2.23.1",
