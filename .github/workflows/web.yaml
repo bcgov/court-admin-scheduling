@@ -1,29 +1,24 @@
-name: Build & Push API Image to Artifactory
+name: Web
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - "api"
-      - ".github/workflows/api-buildandpush.yaml"
   workflow_dispatch:
 env:
-  IMAGE_NAME: cas-api
+  IMAGE_NAME: cas-web
   WORKING_DIRECTORY: ./
 jobs:
   builds:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-
       - name: Login to Artifactory
-        # if: github.repository_owner == 'bcgov-c'
         uses: docker/login-action@v1
         with:
           registry: artifacts.developer.gov.bc.ca
           username: ${{ secrets.CAS_ARTIFACTORY_USERNAME }}
           password: ${{ secrets.CAS_ARTIFACTORY_PASSWORD }}
+
+      - name: Checkout Repo
+        uses: actions/checkout@v4                            
 
       # Get SHORT_SHA to tag images
       - name: Get short SHA
@@ -32,18 +27,6 @@ jobs:
           echo "::set-output name=SHORT_SHA::$(git rev-parse --short HEAD)"
           echo "Short SHA: $SHORT_SHA"
 
-      - name: Docker Build Backend Image
-        working-directory: ${{env.WORKING_DIRECTORY}}
-        run: |      
-          docker build --tag api . --file api/Dockerfile
-          docker tag api artifacts.developer.gov.bc.ca/cac1-cas/${{ env.IMAGE_NAME }}:dev-${{ steps.short_sha.outputs.SHORT_SHA }}
-          
-      - name: Docker Push to Artifactory
-        id: publish
-        # if: github.repository_owner == 'bcgov-c'
-        run: |
-          docker push artifacts.developer.gov.bc.ca/cac1-cas/${{ env.IMAGE_NAME }}:dev-${{ steps.short_sha.outputs.SHORT_SHA }}
-      
       - name: Checkout ArgoCD Repo
         id: gitops
         uses: actions/checkout@v4
@@ -52,6 +35,16 @@ jobs:
           ref: develop
           token: ${{ secrets.GIT_OPS_SSH_KEY }} # `GH_PAT` is a secret that contains your PAT
           path: gitops
+
+      - name: Docker Build Image
+        run: |          
+          docker build --tag nginx-runtime -f docker/nginx-runtime/Dockerfile ./docker/nginx-runtime/
+          cd web
+          docker build --tag cas-web-artifacts -f Dockerfile.node . --build-arg WEB_BASE_HREF=${{ secrets.WEB_BASE_HREF }}
+          cd ..
+          docker build --tag web -f docker/vue-on-nginx/Dockerfile ./docker/vue-on-nginx/
+          docker tag web artifacts.developer.gov.bc.ca/cac1-cas/${{ env.IMAGE_NAME }}:dev-${{ steps.short_sha.outputs.SHORT_SHA }}
+          docker push artifacts.developer.gov.bc.ca/cac1-cas/${{ env.IMAGE_NAME }}:dev-${{ steps.short_sha.outputs.SHORT_SHA }}
 
       - name: Update Helm Values and Commit
         id: helm
@@ -66,7 +59,7 @@ jobs:
 
           sed -i "s/apitag: .*/apitag: dev-${{ steps.short_sha.outputs.SHORT_SHA }} # Image Updated on $DATETIME/" ../deploy/dev_values.yaml
 
-          sed -i "s/apitag: .*/apitag: dev-${{ steps.short_sha.outputs.SHORT_SHA }} # Image Updated on $DATETIME/" api/values.yaml
+          sed -i "s/apitag: .*/apitag: dev-${{ steps.short_sha.outputs.SHORT_SHA }} # Image Updated on $DATETIME/" web/values.yaml
           
           # Commit and push the changes
           git config --global user.email "actions@github.com"
@@ -75,4 +68,3 @@ jobs:
           git add .
           
           git add ../deploy/dev_values.yaml
-
