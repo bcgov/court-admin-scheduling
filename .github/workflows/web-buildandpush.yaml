@@ -1,4 +1,4 @@
-name: Web
+name: Build & Push web Image to Artifactory
 
 on:
   push:
