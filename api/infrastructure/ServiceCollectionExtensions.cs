@@ -184,9 +184,12 @@ namespace CAS.API.infrastructure
                         if (context.HttpContext.Request.Headers["X-Forwarded-Host"].Count > 0)
                         {
                             var forwardedHost = context.HttpContext.Request.Headers["X-Forwarded-Host"];
-                            var forwardedPort = context.HttpContext.Request.Headers["X-Forwarded-Port"];
-                            context.ProtocolMessage.RedirectUri =
-                                $"{XForwardedForHelper.BuildUrlString(forwardedHost, forwardedPort, baseUrl)}{options.CallbackPath}";
+                            var forwardedPort = context.HttpContext.Request.Headers["X-Forwarded-Port"];                            
+                            context.ProtocolMessage.RedirectUri = XForwardedForHelper.BuildUrlString(
+                                forwardedHost,
+                                forwardedPort,
+                                baseUrl,
+                                options.CallbackPath);
                         }
 
                         return Task.CompletedTask;
