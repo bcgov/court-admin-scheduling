@@ -108,7 +108,7 @@ namespace CAS.API.infrastructure
                     // After the auth cookie has been validated, this event is called.
                     // In it we see if the access token is close to expiring.  If it is
                     // then we use the refresh token to get a new access token and save them.
-                    // If the refresh token does not work for some reason then we redirect to 
+                    // If the refresh token does not work for some reason then we redirect to
                     // the login screen.
                     OnValidatePrincipal = async cookieCtx =>
                     {
@@ -184,7 +184,7 @@ namespace CAS.API.infrastructure
                         if (context.HttpContext.Request.Headers["X-Forwarded-Host"].Count > 0)
                         {
                             var forwardedHost = context.HttpContext.Request.Headers["X-Forwarded-Host"];
-                            var forwardedPort = context.HttpContext.Request.Headers["X-Forwarded-Port"];                            
+                            var forwardedPort = context.HttpContext.Request.Headers["X-Forwarded-Port"];
                             context.ProtocolMessage.RedirectUri = XForwardedForHelper.BuildUrlString(
                                 forwardedHost,
                                 forwardedPort,

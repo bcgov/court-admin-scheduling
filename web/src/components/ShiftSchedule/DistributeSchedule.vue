@@ -11,12 +11,12 @@
                         <div class="row m-0">                           
                             <div style="width:20%;"  class="mr-0">
                                 <img style="width:80%;" 
-                                    :src="src"                                                         
+                                    src="../../../public/images/blank-crest.png"
                                     alt="B.C. Gov"/>                                                                   
                             </div>                                
                             <div style="width:70%; margin-top:1.5rem;">
-                                <div style="font-size:13pt;"><b>B.C. CourtAdmin Service</b></div>
-                                <div style="font-size:12pt;" class="text-secondary font-italic"><b>Honour - Integrity - Commitment</b></div>
+                                <div style="font-size:13pt;"><b></b></div>
+                                <div style="font-size:12pt;" class="text-secondary font-italic"><b></b></div>
                             </div>
                         </div>
                     </div>
