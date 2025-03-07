@@ -3,7 +3,7 @@
 		<header id="dutyRosterNav" variant="primary">
 			<b-navbar toggleable="lg" class=" m-0 p-0 navbar navbar-expand-lg navbar-dark">                
 				<b-navbar-nav>
-					<h3 style="width:11rem; margin-bottom: 0px;" class="text-white ml-2 mr-auto font-weight-normal">Duty Roster</h3>
+					<h3 style="width:11rem; margin-bottom: 0px;" class="text-white ml-2 mr-auto font-weight-normal">Scheduling</h3>
 				</b-navbar-nav>
 				<b-navbar-nav v-if="activetab =='Day'">
 					<b-tabs nav-wrapper-class = "bg-primary text-dark"

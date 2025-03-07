@@ -7,7 +7,7 @@
             <b-row>
                 <b-col cols="2" class="">
                     <b-img style="width:100%; margin:0 0 0 0;" 
-                        src="./images/bcss-crest.png"                                                         
+                        src="./images/blank-crest.png"                                                         
                         alt="B.C. Gov"/>
                 </b-col>
                 <b-col cols="10">

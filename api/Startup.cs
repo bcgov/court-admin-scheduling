@@ -29,6 +29,7 @@ using CAS.DB.models;
 using Microsoft.Extensions.Logging;
 using Quartz;
 using CAS.API.cronjobs;
+using CAS.Api.helpers;
 
 namespace CAS.API
 {

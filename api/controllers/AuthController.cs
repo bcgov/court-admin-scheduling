@@ -17,6 +17,7 @@ using CAS.API.helpers.extensions;
 using CAS.API.services;
 using CAS.COMMON.authorization;
 using CAS.DB.models;
+using CAS.Api.helpers;
 
 namespace CAS.API.Controllers
 {
@@ -83,7 +84,7 @@ namespace CAS.API.Controllers
             //We are always sending X-Forwarded-Port, only time we aren't is when we are hitting the API directly. 
             var baseUri = HttpContext.Request.Headers.ContainsKey("X-Forwarded-Host") ? $"{Configuration.GetNonEmptyValue("WebBaseHref")}logout" : "/api";
 
-            var applicationUrl = $"{XForwardedForHelper.BuildUrlString(forwardedHost, forwardedPort, baseUri)}";
+            var applicationUrl = XForwardedForHelper.BuildUrlString(forwardedHost, forwardedPort, baseUri);
             var keycloakLogoutUrl = $"{logoutUrl}?redirect_uri={applicationUrl}";
             var siteminderLogoutUrl = $"{Configuration.GetNonEmptyValue("SiteMinderLogoutUrl")}?returl={keycloakLogoutUrl}&retnow=1";
             return Redirect(keycloakLogoutUrl);

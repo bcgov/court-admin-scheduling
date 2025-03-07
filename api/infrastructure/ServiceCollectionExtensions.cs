@@ -28,6 +28,7 @@ using CAS.API.services.jc;
 using CAS.API.services.scheduling;
 using CAS.API.services.usermanagement;
 using BasicAuthenticationHeaderValue = CAS.API.helpers.BasicAuthenticationHeaderValue;
+using CAS.Api.helpers;
 
 namespace CAS.API.infrastructure
 {
@@ -185,9 +186,11 @@ namespace CAS.API.infrastructure
                         {
                             var forwardedHost = context.HttpContext.Request.Headers["X-Forwarded-Host"];
                             var forwardedPort = context.HttpContext.Request.Headers["X-Forwarded-Port"];
-                            context.ProtocolMessage.RedirectUri =
-                                $"{XForwardedForHelper.BuildUrlString(forwardedHost, forwardedPort, baseUrl)}{options.CallbackPath}";
-                        }
+                            context.ProtocolMessage.RedirectUri = XForwardedForHelper.BuildUrlString(
+                                forwardedHost,
+                                forwardedPort,
+                                baseUrl,
+                                options.CallbackPath);                        }
 
                         return Task.CompletedTask;
                     }
