@@ -38,7 +38,7 @@ namespace CAS.API.Controllers
             Db = db;
         }
         /// <summary>
-        /// This cannot be called from AJAX or SWAGGER. It must be loaded in the browser location, because it brings the user to the SSO page. 
+        /// This cannot be called from AJAX or SWAGGER. It must be loaded in the browser location, because it brings the user to the SSO page.
         /// </summary>
         /// <param name="redirectUri">URL to go back to.</param>
         /// <returns></returns>
@@ -53,9 +53,9 @@ namespace CAS.API.Controllers
             var idirId = User.Claims.GetIdirId();
             var idirName = User.Claims.GetIdirUserName();
             var user = await Db.User.FirstOrDefaultAsync(u => u.IdirId == idirId || !u.IdirId.HasValue && u.IdirName == idirName);
-            if (user == null) 
+            if (user == null)
                 return Redirect(redirectUri);
-            
+
             user.IdirId ??= idirId;
             user.KeyCloakId = User.Claims.GetKeyCloakId();
             user.LastLogin = DateTimeOffset.UtcNow;
@@ -64,7 +64,7 @@ namespace CAS.API.Controllers
         }
 
         /// <summary>
-        /// Logout function, should wipe out all cookies. 
+        /// Logout function, should wipe out all cookies.
         /// </summary>
         /// <returns></returns>
         [HttpGet("logout")]
@@ -80,7 +80,7 @@ namespace CAS.API.Controllers
                 : Request.Host.ToString();
             var forwardedPort = HttpContext.Request.Headers["X-Forwarded-Port"];
 
-            //We are always sending X-Forwarded-Port, only time we aren't is when we are hitting the API directly. 
+            //We are always sending X-Forwarded-Port, only time we aren't is when we are hitting the API directly.
             var baseUri = HttpContext.Request.Headers.ContainsKey("X-Forwarded-Host") ? $"{Configuration.GetNonEmptyValue("WebBaseHref")}logout" : "/api";
 
             var applicationUrl = XForwardedForHelper.BuildUrlString(forwardedHost, forwardedPort, baseUri);
@@ -104,7 +104,7 @@ namespace CAS.API.Controllers
         }
 
         /// <summary>
-        /// Should be logged in to call this. 
+        /// Should be logged in to call this.
         /// </summary>
         /// <returns>access_token and refresh_token for API calls.</returns>
         [HttpGet("token")]
@@ -152,4 +152,3 @@ namespace CAS.API.Controllers
         }
     }
 }
-    

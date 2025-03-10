@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
-    <RootNamespace>CAS.Api</RootNamespace>
+    <RootNamespace>CAS.API</RootNamespace>
     <UserSecretsId>de959767-ede6-4f8a-b6b9-d36aed70339C</UserSecretsId>
     <ProjectGuid>6224c484-3e23-4f06-a749-195c1e478110</ProjectGuid>
   </PropertyGroup>

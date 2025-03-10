@@ -25,13 +25,13 @@
                                     class="img-fluid"
                                     width="50rem"
                                     height="40rem"
-                                    :src="require('../../../../../public/images/bcss-crest.png')" 
+                                    :src="require('../../../../../public/images/blank-crest.png')" 
                                 alt="B.C. Government Logo">
                                 </b-img>
                             </div>
                             <div style="width:80%" class="ml-0">
-                                    <h4 class="mt-3">B.C. CourtAdmin Service</h4>
-                                    <h5 class="mt-n2 text-secondary font-italic">Honour - Integrity - Commitment</h5>
+                                    <h4 class="mt-3"></h4>
+                                    <h5 class="mt-n2 text-secondary font-italic"></h5>
                             </div>
                         </b-row>
                     </b-col>                    
