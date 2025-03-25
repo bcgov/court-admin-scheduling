@@ -234,11 +234,11 @@ namespace CAS.DB.Migrations
                         {
                             Id = 1,
                             AdvanceNotice = 0,
-                            Code = "Chief CourtAdmin",
+                            Code = "Criminal Registry",
                             ConcurrencyToken = 0u,
                             CreatedById = new Guid("00000000-0000-0000-0000-000000000001"),
                             CreatedOn = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            Description = "Chief CourtAdmin",
+                            Description = "Criminal Registry",
                             Mandatory = false,
                             Type = 7,
                             ValidityPeriod = 0
@@ -247,11 +247,11 @@ namespace CAS.DB.Migrations
                         {
                             Id = 2,
                             AdvanceNotice = 0,
-                            Code = "Superintendent",
+                            Code = "Court Clerk",
                             ConcurrencyToken = 0u,
                             CreatedById = new Guid("00000000-0000-0000-0000-000000000001"),
                             CreatedOn = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            Description = "Superintendent",
+                            Description = "Court Clerk",
                             Mandatory = false,
                             Type = 7,
                             ValidityPeriod = 0
@@ -260,11 +260,11 @@ namespace CAS.DB.Migrations
                         {
                             Id = 3,
                             AdvanceNotice = 0,
-                            Code = "Staff Inspector",
+                            Code = "JP",
                             ConcurrencyToken = 0u,
                             CreatedById = new Guid("00000000-0000-0000-0000-000000000001"),
                             CreatedOn = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            Description = "Staff Inspector",
+                            Description = "JP",
                             Mandatory = false,
                             Type = 7,
                             ValidityPeriod = 0
@@ -273,11 +273,11 @@ namespace CAS.DB.Migrations
                         {
                             Id = 4,
                             AdvanceNotice = 0,
-                            Code = "Inspector",
+                            Code = "Traffic Registry",
                             ConcurrencyToken = 0u,
                             CreatedById = new Guid("00000000-0000-0000-0000-000000000001"),
                             CreatedOn = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            Description = "Inspector",
+                            Description = "Traffic Registry",
                             Mandatory = false,
                             Type = 7,
                             ValidityPeriod = 0
@@ -286,11 +286,11 @@ namespace CAS.DB.Migrations
                         {
                             Id = 5,
                             AdvanceNotice = 0,
-                            Code = "Staff Sergeant",
+                            Code = "Family Registry",
                             ConcurrencyToken = 0u,
                             CreatedById = new Guid("00000000-0000-0000-0000-000000000001"),
                             CreatedOn = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            Description = "Staff Sergeant",
+                            Description = "Family Registry",
                             Mandatory = false,
                             Type = 7,
                             ValidityPeriod = 0
@@ -299,11 +299,11 @@ namespace CAS.DB.Migrations
                         {
                             Id = 6,
                             AdvanceNotice = 0,
-                            Code = "Sergeant",
+                            Code = "Small Claims",
                             ConcurrencyToken = 0u,
                             CreatedById = new Guid("00000000-0000-0000-0000-000000000001"),
                             CreatedOn = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            Description = "Sergeant",
+                            Description = "Small Claims",
                             Mandatory = false,
                             Type = 7,
                             ValidityPeriod = 0
@@ -312,11 +312,11 @@ namespace CAS.DB.Migrations
                         {
                             Id = 7,
                             AdvanceNotice = 0,
-                            Code = "Deputy CourtAdmin",
+                            Code = "DDR",
                             ConcurrencyToken = 0u,
                             CreatedById = new Guid("00000000-0000-0000-0000-000000000001"),
                             CreatedOn = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            Description = "Deputy CourtAdmin",
+                            Description = "DDR",
                             Mandatory = false,
                             Type = 7,
                             ValidityPeriod = 0
@@ -488,6 +488,123 @@ namespace CAS.DB.Migrations
                             Description = "Special",
                             Mandatory = false,
                             Type = 5,
+                            ValidityPeriod = 0
+                        },
+                        new
+                        {
+                            Id = 21,
+                            AdvanceNotice = 0,
+                            Code = "Civil Registry",
+                            ConcurrencyToken = 0u,
+                            CreatedById = new Guid("00000000-0000-0000-0000-000000000001"),
+                            CreatedOn = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Description = "Civil Registry",
+                            Mandatory = false,
+                            Type = 7,
+                            ValidityPeriod = 0
+                        },
+                        new
+                        {
+                            Id = 22,
+                            AdvanceNotice = 0,
+                            Code = "Transcripts",
+                            ConcurrencyToken = 0u,
+                            CreatedById = new Guid("00000000-0000-0000-0000-000000000001"),
+                            CreatedOn = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Description = "Transcripts",
+                            Mandatory = false,
+                            Type = 7,
+                            ValidityPeriod = 0
+                        },
+                        new
+                        {
+                            Id = 23,
+                            AdvanceNotice = 0,
+                            Code = "Exhibits",
+                            ConcurrencyToken = 0u,
+                            CreatedById = new Guid("00000000-0000-0000-0000-000000000001"),
+                            CreatedOn = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Description = "Exhibits",
+                            Mandatory = false,
+                            Type = 7,
+                            ValidityPeriod = 0
+                        },
+                        new
+                        {
+                            Id = 24,
+                            AdvanceNotice = 0,
+                            Code = "Accounting",
+                            ConcurrencyToken = 0u,
+                            CreatedById = new Guid("00000000-0000-0000-0000-000000000001"),
+                            CreatedOn = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Description = "Accounting",
+                            Mandatory = false,
+                            Type = 7,
+                            ValidityPeriod = 0
+                        },
+                        new
+                        {
+                            Id = 25,
+                            AdvanceNotice = 0,
+                            Code = "Interpreters",
+                            ConcurrencyToken = 0u,
+                            CreatedById = new Guid("00000000-0000-0000-0000-000000000001"),
+                            CreatedOn = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Description = "Interpreters",
+                            Mandatory = false,
+                            Type = 7,
+                            ValidityPeriod = 0
+                        },
+                        new
+                        {
+                            Id = 26,
+                            AdvanceNotice = 0,
+                            Code = "Records or File Search",
+                            ConcurrencyToken = 0u,
+                            CreatedById = new Guid("00000000-0000-0000-0000-000000000001"),
+                            CreatedOn = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Description = "Records or File Search",
+                            Mandatory = false,
+                            Type = 7,
+                            ValidityPeriod = 0
+                        },
+                        new
+                        {
+                            Id = 27,
+                            AdvanceNotice = 0,
+                            Code = "Supervisor",
+                            ConcurrencyToken = 0u,
+                            CreatedById = new Guid("00000000-0000-0000-0000-000000000001"),
+                            CreatedOn = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Description = "Supervisor",
+                            Mandatory = false,
+                            Type = 7,
+                            ValidityPeriod = 0
+                        },
+                        new
+                        {
+                            Id = 28,
+                            AdvanceNotice = 0,
+                            Code = "Manager",
+                            ConcurrencyToken = 0u,
+                            CreatedById = new Guid("00000000-0000-0000-0000-000000000001"),
+                            CreatedOn = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Description = "Manager",
+                            Mandatory = false,
+                            Type = 7,
+                            ValidityPeriod = 0
+                        },
+                        new
+                        {
+                            Id = 29,
+                            AdvanceNotice = 0,
+                            Code = "Senior Manager",
+                            ConcurrencyToken = 0u,
+                            CreatedById = new Guid("00000000-0000-0000-0000-000000000001"),
+                            CreatedOn = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Description = "Senior Manager",
+                            Mandatory = false,
+                            Type = 7,
                             ValidityPeriod = 0
                         });
                 });

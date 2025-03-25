@@ -741,13 +741,13 @@ namespace CAS.DB.Migrations
                 columns: new[] { "Id", "AdvanceNotice", "Category", "Code", "CreatedById", "Description", "EffectiveDate", "ExpiryDate", "LocationId", "Mandatory", "SubCode", "Type", "UpdatedById", "UpdatedOn", "ValidityPeriod" },
                 values: new object[,]
                 {
-                    { 1, 0, null, "Chief CourtAdmin", new Guid("00000000-0000-0000-0000-000000000001"), "Chief CourtAdmin", null, null, null, false, null, 7, null, null, 0 },
-                    { 2, 0, null, "Superintendent", new Guid("00000000-0000-0000-0000-000000000001"), "Superintendent", null, null, null, false, null, 7, null, null, 0 },
-                    { 3, 0, null, "Staff Inspector", new Guid("00000000-0000-0000-0000-000000000001"), "Staff Inspector", null, null, null, false, null, 7, null, null, 0 },
-                    { 4, 0, null, "Inspector", new Guid("00000000-0000-0000-0000-000000000001"), "Inspector", null, null, null, false, null, 7, null, null, 0 },
-                    { 5, 0, null, "Staff Sergeant", new Guid("00000000-0000-0000-0000-000000000001"), "Staff Sergeant", null, null, null, false, null, 7, null, null, 0 },
-                    { 6, 0, null, "Sergeant", new Guid("00000000-0000-0000-0000-000000000001"), "Sergeant", null, null, null, false, null, 7, null, null, 0 },
-                    { 7, 0, null, "Deputy CourtAdmin", new Guid("00000000-0000-0000-0000-000000000001"), "Deputy CourtAdmin", null, null, null, false, null, 7, null, null, 0 },
+                    { 1, 0, null, "Criminal Registry", new Guid("00000000-0000-0000-0000-000000000001"), "Criminal Registry", null, null, null, false, null, 7, null, null, 0 },
+                    { 2, 0, null, "Court Clerk", new Guid("00000000-0000-0000-0000-000000000001"), "Court Clerk", null, null, null, false, null, 7, null, null, 0 },
+                    { 3, 0, null, "JP", new Guid("00000000-0000-0000-0000-000000000001"), "JP", null, null, null, false, null, 7, null, null, 0 },
+                    { 4, 0, null, "Traffic Registry", new Guid("00000000-0000-0000-0000-000000000001"), "Traffic Registry", null, null, null, false, null, 7, null, null, 0 },
+                    { 5, 0, null, "Family Registry", new Guid("00000000-0000-0000-0000-000000000001"), "Family Registry", null, null, null, false, null, 7, null, null, 0 },
+                    { 6, 0, null, "Small Claims", new Guid("00000000-0000-0000-0000-000000000001"), "Small Claims", null, null, null, false, null, 7, null, null, 0 },
+                    { 7, 0, null, "DDR", new Guid("00000000-0000-0000-0000-000000000001"), "DDR", null, null, null, false, null, 7, null, null, 0 },
                     { 8, 0, null, "CEW (Taser)", new Guid("00000000-0000-0000-0000-000000000001"), "CEW (Taser)", null, null, null, false, null, 6, null, null, 0 },
                     { 9, 0, null, "DNA", new Guid("00000000-0000-0000-0000-000000000001"), "DNA", null, null, null, false, null, 6, null, null, 0 },
                     { 10, 0, null, "FRO", new Guid("00000000-0000-0000-0000-000000000001"), "FRO", null, null, null, false, null, 6, null, null, 0 },
@@ -760,7 +760,16 @@ namespace CAS.DB.Migrations
                     { 17, 0, null, "STIP", new Guid("00000000-0000-0000-0000-000000000001"), "STIP", null, null, null, false, null, 5, null, null, 0 },
                     { 18, 0, null, "Annual", new Guid("00000000-0000-0000-0000-000000000001"), "Annual", null, null, null, false, null, 5, null, null, 0 },
                     { 19, 0, null, "Illness", new Guid("00000000-0000-0000-0000-000000000001"), "Illness", null, null, null, false, null, 5, null, null, 0 },
-                    { 20, 0, null, "Special", new Guid("00000000-0000-0000-0000-000000000001"), "Special", null, null, null, false, null, 5, null, null, 0 }
+                    { 20, 0, null, "Special", new Guid("00000000-0000-0000-0000-000000000001"), "Special", null, null, null, false, null, 5, null, null, 0 },
+                    { 21, 0, null, "Civil Registry", new Guid("00000000-0000-0000-0000-000000000001"), "Civil Registry", null, null, null, false, null, 7, null, null, 0 },
+                    { 22, 0, null, "Transcripts", new Guid("00000000-0000-0000-0000-000000000001"), "Transcripts", null, null, null, false, null, 7, null, null, 0 },
+                    { 23, 0, null, "Exhibits", new Guid("00000000-0000-0000-0000-000000000001"), "Exhibits", null, null, null, false, null, 7, null, null, 0 },
+                    { 24, 0, null, "Accounting", new Guid("00000000-0000-0000-0000-000000000001"), "Accounting", null, null, null, false, null, 7, null, null, 0 },
+                    { 25, 0, null, "Interpreters", new Guid("00000000-0000-0000-0000-000000000001"), "Interpreters", null, null, null, false, null, 7, null, null, 0 },
+                    { 26, 0, null, "Records or File Search", new Guid("00000000-0000-0000-0000-000000000001"), "Records or File Search", null, null, null, false, null, 7, null, null, 0 },
+                    { 27, 0, null, "Supervisor", new Guid("00000000-0000-0000-0000-000000000001"), "Supervisor", null, null, null, false, null, 7, null, null, 0 },
+                    { 28, 0, null, "Manager", new Guid("00000000-0000-0000-0000-000000000001"), "Manager", null, null, null, false, null, 7, null, null, 0 },
+                    { 29, 0, null, "Senior Manager", new Guid("00000000-0000-0000-0000-000000000001"), "Senior Manager", null, null, null, false, null, 7, null, null, 0 }
                 });
 
             migrationBuilder.InsertData(

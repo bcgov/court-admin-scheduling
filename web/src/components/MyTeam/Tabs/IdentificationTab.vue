@@ -19,8 +19,8 @@
         </b-row>
 
         <b-row class="mx-1">   
-            <b-form-group class="mr-1" style="width: 10rem"><label>Gender<span class="text-danger">*</span></label>
-                <b-form-select v-model="user.gender" :options="genderOptions" :state = "selectedGenderState?null:false"></b-form-select>
+            <b-form-group class="mr-1" style="width: 0rem; visibility: hidden;"><label>Gender</label>
+                <b-form-select v-model="user.gender" :options="genderOptions" :state = "true"></b-form-select>
             </b-form-group>
             <b-form-group class="ml-1" style="width: 30rem"><label>Email<span class="text-danger">*</span></label>
                 <b-form-input v-model="user.email" placeholder="Enter Email" :state = "emailState?null:false" type="email"></b-form-input>
@@ -28,11 +28,11 @@
         </b-row>
 
         <b-row class="mx-1">
-            <b-form-group class="mr-1" style="width: 20rem"><label>Badge Number<span class="text-danger">*</span></label>
-                <b-form-input v-model="user.badgeNumber" type="number" placeholder="Enter Badge Number" :state = "badgeNumberState?null:false"></b-form-input>
+            <b-form-group class="mr-1" style="width: 0rem; visibility: hidden;"><label>Badge Number</label>
+                <b-form-input v-model="user.badgeNumber" type="number" placeholder="Enter Badge Number" :state = "true"></b-form-input>
             </b-form-group>                                            
-            <b-form-group class="ml-1" style="width: 15rem"><label>Rank<span class="text-danger">*</span></label>
-                <b-form-select v-model="user.rank" placeholder="Select Rank" :state = "selectedRankState?null:false">
+            <b-form-group class="ml-1" style="width: 15rem"><label>Positions<span class="text-danger">*</span></label>
+                <b-form-select v-model="user.rank" placeholder="Select Position" :state = "selectedRankState?null:false">
                     <b-form-select-option
                         v-for="courtAdminRank in courtAdminRankList" 
                         :key="courtAdminRank.id"
@@ -269,19 +269,19 @@ export default class IdentificationTab extends Vue {
         } else {
             this.lastNameState = true;
         }
-        if (this.genderValues.toString().indexOf(this.user.gender) == -1) {
-            this.selectedGenderState = false;
-            requiredError = true;
-        } else {
+        //if (this.genderValues.toString().indexOf(this.user.gender) == -1) {
+        //    this.selectedGenderState = false;
+        //    requiredError = true;
+        //} else {
             this.selectedGenderState = true;
-        }
-        if (!this.user.badgeNumber) {
-            this.badgeNumberState = false;
-            requiredError = true;
-        } else {
+        //}
+        //if (!this.user.badgeNumber) {
+        //    this.badgeNumberState = false;
+        //    requiredError = true;
+        //} else {
             this.badgeNumberState = true;
             this.duplicateBadge = false;
-        }
+        //}
         if (!this.user.email) {
             this.emailState = false;
             requiredError = true;
@@ -318,8 +318,8 @@ export default class IdentificationTab extends Vue {
 
     public updateProfile(): void {
         const body = {               
-            gender: this.user.gender,
-            badgeNumber: this.user.badgeNumber,
+            //gender: this.user.gender,
+            //badgeNumber: this.user.badgeNumber,
             rank: this.user.rank,
             idirName: this.user.idirUserName,
             firstName:this.user.firstName,
@@ -377,8 +377,8 @@ export default class IdentificationTab extends Vue {
 
         const body = {
             homeLocationId: this.user.homeLocationId,               
-            gender: this.user.gender,
-            badgeNumber: this.user.badgeNumber,
+            //gender: this.user.gender,
+            //badgeNumber: this.user.badgeNumber,
             rank: this.user.rank,
             idirName: this.user.idirUserName,
             firstName:this.user.firstName,

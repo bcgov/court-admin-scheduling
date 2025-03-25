@@ -22,13 +22,13 @@ namespace CAS.DB.configuration
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasData(
-                new LookupCode { CreatedById = User.SystemUser, Id = 1, Code = "Chief CourtAdmin", Description = "Chief CourtAdmin", Type = LookupTypes.CourtAdminRank },
-                new LookupCode { CreatedById = User.SystemUser, Id = 2, Code = "Superintendent", Description = "Superintendent", Type = LookupTypes.CourtAdminRank },
-                new LookupCode { CreatedById = User.SystemUser, Id = 3, Code = "Staff Inspector", Description = "Staff Inspector", Type = LookupTypes.CourtAdminRank },
-                new LookupCode { CreatedById = User.SystemUser, Id = 4, Code = "Inspector", Description = "Inspector", Type = LookupTypes.CourtAdminRank },
-                new LookupCode { CreatedById = User.SystemUser, Id = 5, Code = "Staff Sergeant", Description = "Staff Sergeant", Type = LookupTypes.CourtAdminRank },
-                new LookupCode { CreatedById = User.SystemUser, Id = 6, Code = "Sergeant", Description = "Sergeant", Type = LookupTypes.CourtAdminRank },
-                new LookupCode { CreatedById = User.SystemUser, Id = 7, Code = "Deputy CourtAdmin", Description = "Deputy CourtAdmin", Type = LookupTypes.CourtAdminRank },
+                new LookupCode { CreatedById = User.SystemUser, Id = 1, Code = "Criminal Registry", Description = "Criminal Registry", Type = LookupTypes.CourtAdminRank },
+                new LookupCode { CreatedById = User.SystemUser, Id = 2, Code = "Court Clerk", Description = "Court Clerk", Type = LookupTypes.CourtAdminRank },
+                new LookupCode { CreatedById = User.SystemUser, Id = 3, Code = "JP", Description = "JP", Type = LookupTypes.CourtAdminRank },
+                new LookupCode { CreatedById = User.SystemUser, Id = 4, Code = "Traffic Registry", Description = "Traffic Registry", Type = LookupTypes.CourtAdminRank },
+                new LookupCode { CreatedById = User.SystemUser, Id = 5, Code = "Family Registry", Description = "Family Registry", Type = LookupTypes.CourtAdminRank },
+                new LookupCode { CreatedById = User.SystemUser, Id = 6, Code = "Small Claims", Description = "Small Claims", Type = LookupTypes.CourtAdminRank },
+                new LookupCode { CreatedById = User.SystemUser, Id = 7, Code = "DDR", Description = "DDR", Type = LookupTypes.CourtAdminRank },
               
                 new LookupCode { CreatedById = User.SystemUser, Id = 8, Code = "CEW (Taser)", Description = "CEW (Taser)", Type = LookupTypes.TrainingType },
                 new LookupCode { CreatedById = User.SystemUser, Id = 9, Code = "DNA", Description = "DNA", Type = LookupTypes.TrainingType },
@@ -43,7 +43,17 @@ namespace CAS.DB.configuration
                 new LookupCode { CreatedById = User.SystemUser, Id = 17, Code = "STIP", Description = "STIP", Type = LookupTypes.LeaveType},
                 new LookupCode { CreatedById = User.SystemUser, Id = 18, Code = "Annual", Description = "Annual", Type = LookupTypes.LeaveType },
                 new LookupCode { CreatedById = User.SystemUser, Id = 19, Code = "Illness", Description = "Illness", Type = LookupTypes.LeaveType },
-                new LookupCode { CreatedById = User.SystemUser, Id = 20, Code = "Special", Description = "Special", Type = LookupTypes.LeaveType }
+                new LookupCode { CreatedById = User.SystemUser, Id = 20, Code = "Special", Description = "Special", Type = LookupTypes.LeaveType },
+
+                new LookupCode { CreatedById = User.SystemUser, Id = 21, Code = "Civil Registry", Description = "Civil Registry", Type = LookupTypes.CourtAdminRank },
+                new LookupCode { CreatedById = User.SystemUser, Id = 22, Code = "Transcripts", Description = "Transcripts", Type = LookupTypes.CourtAdminRank },
+                new LookupCode { CreatedById = User.SystemUser, Id = 23, Code = "Exhibits", Description = "Exhibits", Type = LookupTypes.CourtAdminRank },
+                new LookupCode { CreatedById = User.SystemUser, Id = 24, Code = "Accounting", Description = "Accounting", Type = LookupTypes.CourtAdminRank },
+                new LookupCode { CreatedById = User.SystemUser, Id = 25, Code = "Interpreters", Description = "Interpreters", Type = LookupTypes.CourtAdminRank },
+                new LookupCode { CreatedById = User.SystemUser, Id = 26, Code = "Records or File Search", Description = "Records or File Search", Type = LookupTypes.CourtAdminRank },
+                new LookupCode { CreatedById = User.SystemUser, Id = 27, Code = "Supervisor", Description = "Supervisor", Type = LookupTypes.CourtAdminRank },
+                new LookupCode { CreatedById = User.SystemUser, Id = 28, Code = "Manager", Description = "Manager", Type = LookupTypes.CourtAdminRank },
+                new LookupCode { CreatedById = User.SystemUser, Id = 29, Code = "Senior Manager", Description = "Senior Manager", Type = LookupTypes.CourtAdminRank }
             );
             base.Configure(builder);
         }
