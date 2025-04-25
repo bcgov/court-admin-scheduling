@@ -40,7 +40,6 @@ namespace CAS.API.services.usermanagement
         public async Task<CourtAdmin> AddCourtAdmin(CourtAdmin courtAdmin)
         {
             await CheckForBlankOrDuplicateIdirName(courtAdmin.IdirName);
-            await CheckForBlankOrDuplicateBadgeNumber(courtAdmin.BadgeNumber);
 
             courtAdmin.IdirName = courtAdmin.IdirName.ToLower();
             courtAdmin.AwayLocation = null;
@@ -118,9 +117,6 @@ namespace CAS.API.services.usermanagement
         {
             var savedCourtAdmin = await Db.CourtAdmin.FindAsync(courtAdmin.Id);
             savedCourtAdmin.ThrowBusinessExceptionIfNull($"{nameof(CourtAdmin)} with the id: {courtAdmin.Id} could not be found. ");
-
-            if (courtAdmin.BadgeNumber != savedCourtAdmin.BadgeNumber)
-                await CheckForBlankOrDuplicateBadgeNumber(courtAdmin.BadgeNumber);
 
             if (canEditIdir && savedCourtAdmin.IdirName != courtAdmin.IdirName)
             {
