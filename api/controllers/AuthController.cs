@@ -87,7 +87,7 @@ namespace CAS.API.Controllers
             var kcClient = Configuration.GetNonEmptyValue("Keycloak:Client");
 
             var applicationUrl = XForwardedForHelper.BuildUrlString(forwardedHost, forwardedPort, baseUri);
-            var keycloakLogoutUrl = $"{logoutUrl}?post_logout_redirect_uri={applicationUrl}&id_token_hint={kcIdpHint}&client_id={kcClient}";
+            var keycloakLogoutUrl = $"{logoutUrl}?post_logout_redirect_uri={applicationUrl}&client_id={kcClient}";
             var siteminderLogoutUrl = $"{Configuration.GetNonEmptyValue("SiteMinderLogoutUrl")}?returl={keycloakLogoutUrl}&retnow=1";
             return Redirect(keycloakLogoutUrl);
         }
