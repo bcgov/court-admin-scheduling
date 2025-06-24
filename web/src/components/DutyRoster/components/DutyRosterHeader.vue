@@ -447,13 +447,7 @@
 			{name:'Sat', diff:6, enabled: true},
 		]
 
-		assignmentTypeOptions = [
-			{name:'CourtRoom', label:'Court Room'},
-			{name:'CourtRole', label:'Court Assignment'},
-			{name:'JailRole', label:'Jail Assignment'},
-			{name:'EscortRun', label:'Transport Assignment'},
-			{name:'OtherAssignment', label:'Other Assignment'}
-		]
+		assignmentTypeOptions: { name: string; code: number; label: string }[] = [];
 
 		assignmentSubTypeOptions = [] as assignmentSubTypeInfoType[];
 		assignmentError = false;
@@ -461,10 +455,28 @@
 		assignmentErrorMsgDesc = '';
 
         mounted() {
+			this.fetchAssignmentTypeTabs()
 			this.runMethod.$on('addassign', this.addAssignment)			
 			this.selectedDate = moment().format().substring(0,10);			
 			this.loadNewDateRange();
 		}
+
+		public async fetchAssignmentTypeTabs() {
+            const url = '/api/lookuptype/actives?category=Assignment';
+            try {
+                const response = await this.$http.get(url);
+                    if (response.data && Array.isArray(response.data)) {
+                        this.assignmentTypeOptions = response.data.map((item: any) => ({
+                            name: item.name,
+                            code: item.code,
+                            label: item.description
+                        }));
+                    }
+            } catch (err) {
+                this.errorText = `Error fetching assignment types`;
+                this.openErrorModal = true;
+            }
+        }
 		
 		public weekdaysChanged(){
 			Vue.nextTick(()=>{

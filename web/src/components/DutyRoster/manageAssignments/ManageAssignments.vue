@@ -29,6 +29,7 @@
                             :scheduleInfo="data.value"
                             :showAllDuties="showAllAssignments"
                             :cardDate="data.field.label"
+                            :dutyColors2="dutyColors2"
                             v-on:change="loadScheduleInformation()"/>
                     </template>
                     <template v-slot:cell(myteam) = "data" > 
@@ -118,7 +119,9 @@
         maxRank = 1000;
 
         dutyRostersJson: attachedDutyInfoType[] = [];
-
+        dutyColors2: { name: string; label: string; code: number; colorCode: string }[] = [];
+        isDutyColorsLoaded = false;
+        
         fields: any[] = []
         originalFields = [
             {key:'myteam', label:'My Team', tdClass:'px-0 mx-0', thClass:'text-center'},
@@ -137,16 +140,27 @@
         locationChange()
         {
             if (this.isManageScheduleDataMounted) {
-                this.loadScheduleInformation()               
+                this.loadScheduleInformation();
+                
             }            
         } 
 
         // mounted()
         // {                       
         //     //this.loadScheduleInformation();
-        //     console.log('mount manage')
         // }
-
+        fetchDutyColors2() {
+            const url = '/api/lookuptype/actives?category=Assignment';
+            this.$http.get(url)
+            .then(response => {
+                this.dutyColors2 = response.data.map(item => ({
+                name: item.name,
+                label: item.description,
+                code: item.code,
+                colorCode: item.displayColor
+                }));
+            })
+        }
         public getDutyRosters(startDate, endDate){            
             const url = 'api/dutyroster?locationId='+this.location.id+'&start='+startDate+'&end='+endDate;
             return this.$http.get(url)
@@ -164,7 +178,7 @@
         }        
 
         async loadScheduleInformation(allAssignments?) {
-            
+            this.fetchDutyColors2()
             this.extractTableFields(allAssignments);
 
             this.UpdateSelectedShifts([]);
@@ -640,6 +654,7 @@
         }
 
         public getType(type: string){
+            console.log("ManageAssignment: type " + type)
             return Vue.filter('getColorByType')(type)
         }
 

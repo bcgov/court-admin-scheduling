@@ -124,18 +124,33 @@
         mounted()
         {
             //console.log(this.shiftAvailabilityInfo)
+            this.fetchDutyColors();
             this.hasPermissionToAddAssignDuty = this.userDetails.permissions.includes("CreateAndAssignDuties");
             this.extractCourtAdminAvailability() 
         }
 
-        dutyColors = [
-            {name:'court' , colorCode:'#189fd4'},
-            {name:'jail' ,  colorCode:'#A22BB9'},
-            {name:'transport', colorCode:'#ffb007'},
-            {name:'other',  colorCode:'#7a4528'},
-            {name:'overtime',colorCode:'#e85a0e'},
-            {name:'free',   colorCode:'#e6d9e2'}            
-        ]
+        dutyColors: { name: string; colorCode: string }[] = [];
+        // dutyColors = [
+        //     {name:'court' , colorCode:'#189fd4'},
+        //     {name:'jail' ,  colorCode:'#A22BB9'},
+        //     {name:'transport', colorCode:'#ffb007'},
+        //     {name:'other',  colorCode:'#7a4528'},
+        //     {name:'overtime',colorCode:'#e85a0e'},
+        //     {name:'free',   colorCode:'#e6d9e2'}            
+        // ]
+        fetchDutyColors() {
+            const url = '/api/lookuptype/actives?category=Assignment';
+            this.$http.get(url)
+                .then((response: any) => {
+                    this.dutyColors = response.data.map((item: any) => ({
+                        name: item.description,
+                        colorCode: item.displayColor
+                    }));
+                    // Optionally add static colors if needed
+                    this.dutyColors.push({ name: 'overtime', colorCode: '#e85a0e' });
+                    this.dutyColors.push({ name: 'free', colorCode: '#e6d9e2' });
+               })
+        }
 
         public extractCourtAdminAvailability(){
             this.myTeamMembers = [];

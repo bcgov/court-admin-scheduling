@@ -35,6 +35,7 @@
                     <b-dropdown-item v-if="hasPermissionToGenerateReportsPage" to="/reports">Reports</b-dropdown-item>
                 </b-nav-item-dropdown>
                 <b-nav-item-dropdown text="Manage Types" dropdown :disabled="!hasPermissionToEditManageTypes">
+                    <b-dropdown-item to="/define-types">Define Assignment</b-dropdown-item>
                     <b-dropdown-item to="/assignment-types">Assignment Types</b-dropdown-item>
                     <b-dropdown-item to="/leave-training-types">Leave & Training Types</b-dropdown-item>
                 </b-nav-item-dropdown>

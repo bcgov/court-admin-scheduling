@@ -45,7 +45,10 @@
                             <font-awesome-icon v-else-if="duty.dutyType=='Training'" style="font-size: 0.5rem;" icon="graduation-cap" />
                             <font-awesome-icon v-else-if="duty.dutyType=='Leave'" style="font-size: 0.5rem;" icon="suitcase" />
                             <font-awesome-icon v-else-if="duty.dutyType=='Loaned'" style="font-size: 0.5rem;transform:rotate(180deg);" icon="sign-out-alt" />
-                            <b> {{duty.startTime}}-{{duty.endTime}}</b> {{ duty.dutyType.replace('Role','').replace('Assignment','').replace('EscortRun','Transport') }} 
+                            <b>{{ duty.startTime }}-{{ duty.endTime }}</b>
+                            {{
+                                (dutyColors2.find(dc => dc.name === duty.dutyType)?.label) || duty.dutyType
+                            }}
                             <span v-if="duty.dutyType!='Training' && duty.dutyType!='Leave' && duty.dutyType!='Loaned'" > {{duty.dutySubType}} </span>
                         </div>                            
                     </div>                    
@@ -138,6 +141,9 @@
         @Prop({required: true})
         cardDate!: string;
 
+        @Prop({ required: true })
+        dutyColors2!: { name: string; label: string; code: number; colorCode: string }[];
+
         @commonState.State
         public userDetails!: userInfoType;
         
@@ -203,18 +209,22 @@
             }
             this.hasPermissionToEditShifts = this.userDetails.permissions.includes("EditShifts");
             this.hasPermissionToEditDuty = this.userDetails.permissions.includes("EditDuties");            
-            this.hasPermissionToAddAssignDuty = this.userDetails.permissions.includes("CreateAndAssignDuties");            
+            this.hasPermissionToAddAssignDuty = this.userDetails.permissions.includes("CreateAndAssignDuties");
+            
             this.extractCourtAdminEvents();
             this.isMounted = true;
-            Vue.nextTick(()=>this.checkOpenModal()) 
+            Vue.nextTick(()=>this.checkOpenModal())
+                     
         }
         
         public extractCourtAdminEvents(){            
             // if(this.scheduleInfo.length) console.log(this.scheduleInfo)
             this.courtAdminAvailabilityArray = null
             this.courtAdminEvent = {} as manageAssignmentsScheduleInfoType;
-            const duties: manageAssignmentDutyInfoType[] = []            
+            const duties: manageAssignmentDutyInfoType[] = []
+            console.log('Extracting Court Admin Events', this.scheduleInfo)            
             for(const courtAdminEvent of this.sortEvents(this.scheduleInfo)){
+                console.log("courtAdminEvent from extractCourtAdminEvents",courtAdminEvent)
                 if(courtAdminEvent.fullday){
                     this.courtAdminEvent=courtAdminEvent;
                     return
@@ -244,6 +254,16 @@
                 }
                 else{
                     //console.log(courtAdminEvent)
+                    for (const duty of courtAdminEvent.duties){
+                        // If duty.dutyType is a number, find by code; else by name
+                        if (typeof duty.dutyType === 'number') {
+                            const colorItem = this.dutyColors2.find(dc => dc.code === duty.dutyType);
+                            if (colorItem) {
+                                duty.dutyType = colorItem.name; // set to Name
+                                duty.color = colorItem.colorCode;
+                            }
+                        } 
+                    }
                     this.courtAdminAvailabilityArray = Vue.filter('startEndTimesToArray')(
                         this.courtAdminAvailabilityArray, 1, 
                         courtAdminEvent.date.slice(0,10), 
@@ -261,6 +281,7 @@
                         this.courtAdminEvent.endTime = end > courtAdminEvent.endTime? end :courtAdminEvent.endTime;
                     }
                 }
+                console.log('Duties', duties)
             }
             
             if(this.currentTime){
@@ -345,6 +366,7 @@
 
         public sortEvents (events: any) {            
             const eventsCopy = JSON.parse(JSON.stringify(events))
+            console.log('Sorting Events', eventsCopy)
             return _.sortBy(eventsCopy, "startTime");
         }
 

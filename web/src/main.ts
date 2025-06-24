@@ -15,7 +15,20 @@ import store from './store/index'
 import http from "./plugins/http";
 import "./filters"
 import LoadingSpinner from "@components/LoadingSpinner.vue";
+import axios from 'axios'
 
+axios.get('/api/lookuptype/actives?category=Assignment').then(response => {
+    const wsColors: { [key: string]: string } = {};
+    response.data.forEach((item: any) => {
+        wsColors[item.description] = item.displayColor;
+    });
+    wsColors['Overtime'] = '#e85a0e'; 
+
+    // Override the WSColors filter with the fetched data
+    Vue.filter('WSColors', function() {
+        return wsColors;
+    });
+});
 library.add(faGraduationCap);
 library.add(faSuitcase);
 library.add(faSignInAlt);

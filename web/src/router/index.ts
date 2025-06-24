@@ -12,6 +12,7 @@ import MyTeamMembers from '@components/MyTeam/MyTeamMembers.vue';
 import DefineRolesAccess from '@components/MyTeam/DefineRolesAccess.vue';
 import ViewReports from '@components/MyTeam/ViewReports.vue';
 import AssignmentTypes from '@components/ManageTypes/AssignmentTypes.vue';
+import DefineTypes from '@components/ManageTypes/DefineTypes.vue';
 import LeaveTrainingTypes from '@components/ManageTypes/LeaveTrainingTypes.vue';
 import store from "@/store";
 
@@ -150,6 +151,13 @@ const routes: Array<RouteConfig> = [
 		beforeEnter: checkPermission,
 		component: ViewReports,
 		meta:{requiredPermission: 'GenerateReports'}  
+	},
+	{
+		path: '/define-types',
+		name: 'DefineTypes',
+		beforeEnter: checkPermission,
+		component: DefineTypes,
+		meta: {requiredPermission: 'EditTypes'}
 	},
 	{    
 		path: '/assignment-types',

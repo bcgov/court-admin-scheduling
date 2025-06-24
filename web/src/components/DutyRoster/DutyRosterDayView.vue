@@ -174,6 +174,23 @@
             {name:'overtime',   colorCode:'#e85a0e'},
             {name:'free',       colorCode:'#e6d9e2'}                        
         ]
+        dutyColors2: { name: string; code?: string; colorCode: string }[] = []
+
+        async fetchDutyColors2() {
+            try {
+            const url = '/api/lookuptype/actives?category=Assignment';
+            const response = await this.$http.get(url);
+            this.dutyColors2 = response.data.map(item => ({
+                name: item.description,
+                code: item.code,
+                colorCode: item.displayColor
+            }));
+            this.dutyColors2.push({name:'overtime',   colorCode:'#e85a0e'});
+            this.dutyColors2.push({name:'free', colorCode:'#e6d9e2'});
+            } catch (err) {
+            // handle error if needed
+            }
+        }
 
         @Watch('location.id', { immediate: true })
         async locationChange()
@@ -211,7 +228,8 @@
             this.runMethod.$on('getData', this.getData)        
             this.isDutyRosterDataMounted = false;
 
-            this.getData(this.scrollPositions);
+            await this.fetchDutyColors2();
+            await this.getData(this.scrollPositions);
             window.addEventListener('resize', this.getWindowHeight);
             this.getWindowHeight()
         }
@@ -239,7 +257,7 @@
         }
 
         get dutyColorsCode(){
-            return this.dutyColors.filter(color=>(color.name!='courtroom' && color.name!='free'))
+            return this.dutyColors2.filter(color=>(color.name!='free'))
         }
 
         public getBeautifyTime(hour: number){
@@ -314,6 +332,8 @@
                 const dutiesDetail: dutiesDetailInfoType[] = [];
                 const shiftArray = this.fillInArray(Array(96).fill(0), 1 , rangeBin.startBin,rangeBin.endBin)
                 for(const duty of dutySlots){
+                    console.log('duty in dutySlots', duty)
+                    console.log('duty.assignmentLookupCode', duty.assignmentLookupCode)
 
                     const color = this.getType(duty.assignmentLookupCode.type)
                     const dutyRangeBin = this.getTimeRangeBins(duty.startDate, duty.endDate, this.location.timezone);
@@ -335,7 +355,7 @@
                             endBin: dutyRangeBin.endBin,
                             name: color.name,
                             colorCode: color.colorCode,
-                            color: (duty.isOvertime||shiftInfo.overtimeHours>0)? this.dutyColors[5].colorCode:color.colorCode,
+                            color: (duty.isOvertime||shiftInfo.overtimeHours>0)? this.dutyColors2[5].colorCode:color.colorCode,
                             type: duty.assignmentLookupCode.type,
                             code: duty.assignmentLookupCode.code
                         })
@@ -447,11 +467,23 @@
             }
         }
 
-        public getType(type: string){
-            for(const color of this.dutyColors){
-                if(type.toLowerCase().includes(color.name))return color
+        public getType(type: string | number) {
+            // Normalize type to string for comparison
+            const typeStr = typeof type === 'number' ? type.toString() : (type || '').toString().toLowerCase();
+            console.log('getType', typeStr, this.dutyColors2);
+
+            for (const color of this.dutyColors2) {
+                // Match by code (number or string)
+                if (color.code && typeStr === color.code.toString().toLowerCase()) {
+                    return color;
+                }
+                // Match by name (case-insensitive)
+                if (color.name && typeStr.includes(color.name.toLowerCase())) {
+                    return color;
+                }
             }
-            return this.dutyColors[3]
+            // Default color if not found
+            return this.dutyColors[3];
         }
 
         public fillInArray(array, fillInNum, startBin, endBin){

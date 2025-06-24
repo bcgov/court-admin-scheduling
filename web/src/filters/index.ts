@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import axios from 'axios'
 import moment from 'moment-timezone';
 
 
@@ -214,6 +215,53 @@ Vue.filter('autoCompleteTime', function(time){
 })
 
 Vue.filter('getColorByType', function(type: string){
+    // If dutyColors2 is not already loaded, fetch and cache it
+    if (!Vue.prototype.$dutyColors2Promise) {
+        Vue.prototype.$dutyColors2Promise = (async () => {
+            try {
+                const url = '/api/lookuptype/actives?category=Assignment';
+                const response = await Vue.prototype.$http.get(url);
+                const dutyColors2 = response.data.map(item => ({
+                    name: item.description,
+                    code: item.code,
+                    colorCode: item.displayColor
+                }));
+                dutyColors2.push({ name: 'overtime', colorCode: '#e85a0e' });
+                dutyColors2.push({ name: 'free', colorCode: '#e6d9e2' });
+                Vue.prototype.$dutyColors2 = dutyColors2;
+                return dutyColors2;
+            } catch (err) {
+                Vue.prototype.$dutyColors2 = [];
+                return [];
+            }
+        })();
+    }
+
+    // Use async/await to get the colors if available
+    if (Vue.prototype.$dutyColors2) {
+        for (const color of Vue.prototype.$dutyColors2) {
+            try {
+                if (type.toLowerCase().includes(color.name.toLowerCase())) return color;
+            } catch (e) {
+                console.error('Error in getColorByType filter:', e);
+                return { name: 'escort', colorCode: '#ffb007' };
+            }
+        }
+    } else if (Vue.prototype.$dutyColors2Promise) {
+        // If not loaded yet, return a Promise that resolves to the color
+        return Vue.prototype.$dutyColors2Promise.then((dutyColors2: any[]) => {
+            for (const color of dutyColors2) {
+                try {
+                    if (type.toLowerCase().includes(color.name.toLowerCase())) return color;
+                } catch (e) {
+                    console.error('Error in getColorByType filter:', e);
+                    return { name: 'escort', colorCode: '#ffb007' };
+                }
+            }
+            return { name: 'escort', colorCode: '#ffb007' };
+        });
+    }
+    console.log(type)
     const dutyColors = [
         {name:'courtroom',  colorCode:'#189fd4'},
         {name:'court',      colorCode:'#189fd4'},
@@ -224,7 +272,12 @@ Vue.filter('getColorByType', function(type: string){
         {name:'free',       colorCode:'#e6d9e2'}                        
     ]
     for(const color of dutyColors){
-        if(type.toLowerCase().includes(color.name))return color
+        try{
+            if(type.toLowerCase().includes(color.name))return color
+        }catch(e){
+            console.error('Error in getColorByType filter:', e)
+            return dutyColors[3] // Default to escort color if error occurs
+        }
     }
     return dutyColors[3]
 })

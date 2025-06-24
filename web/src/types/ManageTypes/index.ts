@@ -18,3 +18,15 @@ export interface leaveTrainingTypeInfoType {
     type: string;
     sortOrder: number;
 }
+
+export interface defineTypeInfoType {
+    id: number;
+    name: string;
+    description: string;
+    abbreviation: string;
+    displayColor: string;
+    isSystem?: boolean;
+    expiryDate?: string | null;
+    sortOrder?: number | null;
+    _rowVariant?: string;
+}
