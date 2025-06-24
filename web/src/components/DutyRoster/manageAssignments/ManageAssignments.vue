@@ -460,7 +460,7 @@
                 dutyData.id = duty.id?duty.id:'';
                 dutyData.startTime = Vue.filter('beautify-time')(moment(duty.startDate).tz(duty.timezone).format());
                 dutyData.endTime = Vue.filter('beautify-time')(moment(duty.endDate).tz(duty.timezone).format());
-                dutyData.dutyType = (duty.assignmentLookupCode?.type)?duty.assignmentLookupCode.type:'';
+                dutyData.dutyType = duty.assignmentLookupCode?.type ?? '';
                 dutyData.dutySubType = (duty.assignmentLookupCode?.code)?duty.assignmentLookupCode.code:'';
                 dutyData.dutyNotes = (duty.dutyComment)?(duty.dutyComment):''// + ' (' +dutyData.startTime + '-' + dutyData.endTime + ')'):'';
                 dutyData.assignmentNotes = (duty.assignmentComment)?(duty.assignmentComment + ' (' +dutyData.dutySubType+ ')'):'';

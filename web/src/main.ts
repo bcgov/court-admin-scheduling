@@ -23,7 +23,17 @@ axios.get('/api/lookuptype/actives?category=Assignment').then(response => {
         wsColors[item.description] = item.displayColor;
     });
     wsColors['Overtime'] = '#e85a0e'; 
+    const dutyColors = response.data.map((item: any) => ({
+        name: item.name.toLowerCase(), // normalize for matching
+        label: item.description,
+        code: item.code,
+        colorCode: item.displayColor
+    }));
 
+    (window as any).dutyColors = dutyColors;
+    // Optionally add static entries
+    dutyColors.push({ name: 'overtime', colorCode: '#e85a0e' });
+    dutyColors.push({ name: 'free', colorCode: '#e6d9e2' });
     // Override the WSColors filter with the fetched data
     Vue.filter('WSColors', function() {
         return wsColors;

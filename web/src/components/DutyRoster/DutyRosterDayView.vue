@@ -332,9 +332,6 @@
                 const dutiesDetail: dutiesDetailInfoType[] = [];
                 const shiftArray = this.fillInArray(Array(96).fill(0), 1 , rangeBin.startBin,rangeBin.endBin)
                 for(const duty of dutySlots){
-                    console.log('duty in dutySlots', duty)
-                    console.log('duty.assignmentLookupCode', duty.assignmentLookupCode)
-
                     const color = this.getType(duty.assignmentLookupCode.type)
                     const dutyRangeBin = this.getTimeRangeBins(duty.startDate, duty.endDate, this.location.timezone);
                     const dutyArray = this.fillInArray(Array(96).fill(0), 1 , dutyRangeBin.startBin,dutyRangeBin.endBin)
@@ -470,7 +467,6 @@
         public getType(type: string | number) {
             // Normalize type to string for comparison
             const typeStr = typeof type === 'number' ? type.toString() : (type || '').toString().toLowerCase();
-            console.log('getType', typeStr, this.dutyColors2);
 
             for (const color of this.dutyColors2) {
                 // Match by code (number or string)

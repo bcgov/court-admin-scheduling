@@ -97,7 +97,7 @@
                         <b v-if="duty.isOvertime">*</b>                            
                         <b> {{duty.startTime}}-{{duty.endTime}}</b>  
                         <span > {{duty.dutySubType}} </span>
-                        ({{ duty.dutyType}})
+                        ({{ (dutyColors2.find(dc => dc.name === duty.dutyType)?.label) || duty.dutyType}})
                     </div>                            
                 </div>
             </template>
@@ -136,7 +136,7 @@
 
         isMounted = false;       
 
-        dutyColors2: { name: string; code: number; colorCode: string }[] = [];
+        dutyColors2: { name: string; label: string; code: number; colorCode: string }[] = [];
         
         courtAdminSchedules: dailyDistributeScheduleInfoType[] =[];    
 
@@ -164,6 +164,7 @@
             .then(response => {
                 this.dutyColors2 = response.data.map(item => ({
                 name: item.name,
+                label: item.description,
                 code: item.code,
                 colorCode: item.displayColor
                 }));
@@ -200,15 +201,22 @@
                         for(const duty of shEvent.duties){
                             duty.isOvertime=true
                             duty.color= Vue.filter('subColors')('overtime')
-                            duties.push(duty)
+                            if (typeof duty.dutyType === 'number') {
+                            const colorItem = this.dutyColors2.find(dc => dc.code === duty.dutyType);
+                            if (colorItem) {
+                                duty.dutyType = colorItem.name; // set to Name
+                            }
+                            } 
+                            else{
+                                duty.color= Vue.filter('subColors')(duty.dutyType)
+                            }
+                                duties.push(duty)
                         }
                     }
                     else{
                         for (const duty of shEvent.duties)
                         {
                             // If duty.dutyType is a number, find by code; else by name
-                            console.log(duty.dutyType)
-                            console.log(this.dutyColors2)
                             if (typeof duty.dutyType === 'number') {
                                 const colorItem = this.dutyColors2.find(dc => dc.code === duty.dutyType);
                                 if (colorItem) {

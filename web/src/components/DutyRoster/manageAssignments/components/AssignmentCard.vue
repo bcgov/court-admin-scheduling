@@ -222,9 +222,7 @@
             this.courtAdminAvailabilityArray = null
             this.courtAdminEvent = {} as manageAssignmentsScheduleInfoType;
             const duties: manageAssignmentDutyInfoType[] = []
-            console.log('Extracting Court Admin Events', this.scheduleInfo)            
             for(const courtAdminEvent of this.sortEvents(this.scheduleInfo)){
-                console.log("courtAdminEvent from extractCourtAdminEvents",courtAdminEvent)
                 if(courtAdminEvent.fullday){
                     this.courtAdminEvent=courtAdminEvent;
                     return
@@ -249,6 +247,15 @@
                     for(const duty of courtAdminEvent.duties){
                         duty.isOvertime=true
                         duty.color= Vue.filter('subColors')('overtime')
+                        if (typeof duty.dutyType === 'number') {
+                            const colorItem = this.dutyColors2.find(dc => dc.code === duty.dutyType);
+                            if (colorItem) {
+                                duty.dutyType = colorItem.name; // set to Name
+                            }
+                        } 
+                        else{
+                            duty.color= Vue.filter('subColors')(duty.dutyType)
+                        }
                         duties.push(duty)
                     }
                 }
@@ -281,7 +288,6 @@
                         this.courtAdminEvent.endTime = end > courtAdminEvent.endTime? end :courtAdminEvent.endTime;
                     }
                 }
-                console.log('Duties', duties)
             }
             
             if(this.currentTime){
