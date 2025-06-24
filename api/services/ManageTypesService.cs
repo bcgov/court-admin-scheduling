@@ -120,12 +120,17 @@ namespace CAS.API.services
             await Db.SaveChangesAsync();
         }
 
-        public async Task<List<LookupCode>> GetAll(LookupTypes? codeType, int? locationId, bool showExpired = false)
+        public async Task<List<LookupCode>> GetAll(string codeType, int? locationId, bool showExpired = false)
         {
+            var lookupType = await Db.LookupType.Where(lt => lt.Name == codeType).FirstOrDefaultAsync();
+            if (lookupType == null && codeType != null)
+            {
+                throw new BusinessLayerException($"Lookup type '{codeType}' does not exist.");
+            }
             var lookupCodes = await Db.LookupCode.AsNoTracking()
                 .Include(lc => lc.SortOrder.Where(so => so.LocationId == locationId))
                 .Where(lc =>
-                    (codeType == null || lc.Type == codeType) &&
+                    (codeType == null || lc.Type == lookupType.Code) &&
                     (locationId == null || lc.LocationId == null || lc.LocationId == locationId) &&
                     (showExpired || lc.ExpiryDate == null))
                 .OrderBy(a => (int)a.Type)

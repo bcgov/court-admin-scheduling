@@ -1,13 +1,12 @@
 using System;
 using CAS.API.models.dto.generated;
-using CAS.DB.models.lookupcodes;
 
 namespace CAS.API.models.dto.generated
 {
     public partial class LookupCodeDto
     {
         public int Id { get; set; }
-        public LookupTypes Type { get; set; }
+        public int Type { get; set; }
         public string Code { get; set; }
         public string SubCode { get; set; }
         public string Description { get; set; }

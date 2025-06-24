@@ -39,6 +39,7 @@ namespace CAS.DB.models
 
         public virtual DbSet<Location> Location { get; set; }
         public virtual DbSet<LookupCode> LookupCode { get; set; }
+        public virtual DbSet<LookupType> LookupType { get; set; }
         public virtual DbSet<LookupSortOrder> LookupSortOrder { get; set; }
         public virtual DbSet<Region> Region { get; set; }
         public virtual DbSet<CourtAdmin> CourtAdmin { get; set; }

@@ -36,7 +36,7 @@ namespace CAS.API.services.scheduling
         public async Task<List<Shift>> GetShiftsForLocation(int locationId, DateTimeOffset start, DateTimeOffset end, bool includeDuties)
         {
             var lookupCode = await Db.LookupCode.AsNoTracking()
-                .Where(lc => lc.Type == LookupTypes.CourtAdminRank)
+                .Where(lc => lc.Type == (int) LookupTypes.CourtAdminRank)
                 .Include(s => s.SortOrder)
                 .ToListAsync();
 
@@ -309,7 +309,7 @@ namespace CAS.API.services.scheduling
             var allShiftConflicts = courtAdminEventConflicts.Concat(existingShiftConflicts).ToList();
 
             var lookupCode = await Db.LookupCode.AsNoTracking()
-                .Where(lc => lc.Type == LookupTypes.CourtAdminRank)
+                .Where(lc => lc.Type == (int) LookupTypes.CourtAdminRank)
                 .Include(s => s.SortOrder)
                 .ToListAsync();
 

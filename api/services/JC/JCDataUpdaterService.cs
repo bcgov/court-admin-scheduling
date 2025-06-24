@@ -148,7 +148,7 @@ namespace CAS.API.services.jc
             var courtRooms = courtRoomsLookups.SelectToList(cr =>
                 new CAS.DB.models.LookupCode
                 {
-                    Type = LookupTypes.CourtRoom,
+                    Type = (int) LookupTypes.CourtRoom,
                     Code = cr.Code,
                     LocationId = locations.FirstOrDefault(l => l.JustinCode == cr.Flex)
                         ?.Id,
@@ -175,7 +175,7 @@ namespace CAS.API.services.jc
             {
                 var disableCourtRooms = Db.LookupCode.WhereToList(lc =>
                     lc.ExpiryDate == null &&
-                    lc.Type == LookupTypes.CourtRoom &&
+                    lc.Type == (int) LookupTypes.CourtRoom &&
                     !courtRooms.Any(cr => cr.Type == lc.Type && cr.Code == lc.Code && cr.LocationId == lc.LocationId));
 
                 foreach (var disableCourtRoom in disableCourtRooms)
