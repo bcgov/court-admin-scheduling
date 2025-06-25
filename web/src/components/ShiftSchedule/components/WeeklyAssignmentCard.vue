@@ -17,7 +17,7 @@
                             <b v-if="duty.isOvertime">*</b>                            
                             <b> {{duty.startTime}}-{{duty.endTime}}</b>  
                             <span v-if="duty.dutyType!='Training' && duty.dutyType!='Leave' && duty.dutyType!='Loaned'" > {{duty.dutySubType}} </span>
-                            {{ duty.dutyType | getTypeAbrv }}
+                            {{ getTypeAbrv(duty.dutyType) }}
                         </div>                            
                     </div>                    
                 </div>                    
@@ -75,6 +75,12 @@
         @Prop({required: true})
         scheduleInfo!: manageAssignmentsScheduleInfoType[];
 
+        @Prop({ required: true })
+        dutyColors2!: { name: string; code: number; colorCode: string }[];
+
+        @Prop({ required: true })
+        abbreviations!: { [key: string]: string };
+
         @commonState.State
         public location!: locationInfoType;
         
@@ -91,7 +97,7 @@
         public extractCourtAdminEvents(){            
 
             this.courtAdminEvent = {} as manageAssignmentsScheduleInfoType;
-            const duties: manageAssignmentDutyInfoType[] = []            
+            const duties: manageAssignmentDutyInfoType[] = []
             for(const courtAdminEvent of this.sortEvents(this.scheduleInfo)){
                 if(courtAdminEvent.fullday){
                     this.courtAdminEvent=courtAdminEvent;
@@ -117,12 +123,30 @@
                     for(const duty of courtAdminEvent.duties){
                         duty.isOvertime=true
                         duty.color= Vue.filter('subColors')('overtime')
+                        if (typeof duty.dutyType === 'number') {
+                            const colorItem = this.dutyColors2.find(dc => dc.code === duty.dutyType);
+                            if (colorItem) {
+                                duty.dutyType = colorItem.name; // set to Name
+                            }
+                        } 
+                        else{
+                            duty.color= Vue.filter('subColors')(duty.dutyType)
+                        }
                         duties.push(duty)
                     }
                 }
                 else{
                     //console.log(courtAdminEvent)
-                   
+                   for (const duty of courtAdminEvent.duties){
+                        // If duty.dutyType is a number, find by code; else by name
+                        if (typeof duty.dutyType === 'number') {
+                            const colorItem = this.dutyColors2.find(dc => dc.code === duty.dutyType);
+                            if (colorItem) {
+                                duty.dutyType = colorItem.name; // set to Name
+                                duty.color = colorItem.colorCode;
+                            }
+                        } 
+                    }
                     duties.push(...courtAdminEvent.duties)
                     if(!this.courtAdminEvent.type){
                         this.courtAdminEvent=courtAdminEvent
@@ -140,6 +164,12 @@
             // console.log(this.courtAdminEvent)
             //console.log(duties)
             //console.log(this.courtAdminAvailabilityArray)
+        }
+
+        getTypeAbrv(type: string) {
+            if (!type) return '';
+            if (this.abbreviations[type]) return `(${this.abbreviations[type]})`;
+            return type;
         }
 
         public sortEvents (events: any) {            

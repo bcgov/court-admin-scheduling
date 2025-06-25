@@ -1,7 +1,8 @@
 <template>
     <div> 
          
-        <b-table            
+        <b-table
+            v-if="isDutyColorsLoaded"            
             :items="courtAdminSchedules" 
             :fields="fields"
             small
@@ -47,7 +48,10 @@
             </template>               
             
             <template v-slot:cell() = "data">
-                <weekly-assignment-card :scheduleInfo="data.item[data.field.key]" />                
+                <weekly-assignment-card 
+                :scheduleInfo="data.item[data.field.key]"
+                :abbreviations="abbreviations"
+                :dutyColors2="dutyColors2" />                
             </template>                
             
         </b-table>
@@ -79,6 +83,32 @@
 
         @Prop({required: true})
         fields!: any[];
+
+        dutyColors2: { name: string; code: number; colorCode: string }[] = [];
+        isDutyColorsLoaded = false;
+
+        abbreviations: { [key: string]: string } = {};
+
+        mounted() {
+            this.fetchDutyColors2();
+        }
+        fetchDutyColors2() {
+            const url = '/api/lookuptype/actives?category=Assignment';
+            this.$http.get(url)
+            .then(response => {
+                this.dutyColors2 = response.data.map(item => ({
+                name: item.name,
+                code: item.code,
+                colorCode: item.displayColor
+                }));
+                // Fill abbreviations object
+                this.abbreviations = {};
+                response.data.forEach(item => {
+                this.abbreviations[item.name] = item.abbreviation || '';
+            });
+                this.isDutyColorsLoaded = true;
+            })
+        }
 
         @commonState.State
         public location!: locationInfoType;    

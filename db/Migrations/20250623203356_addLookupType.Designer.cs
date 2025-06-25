@@ -4,6 +4,7 @@ using System.Text.Json;
 using CAS.DB.models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CAS.DB.Migrations
 {
     [DbContext(typeof(CourtAdminDbContext))]
-    partial class CourtAdminDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250623203356_addLookupType")]
+    partial class addLookupType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1730,7 +1733,7 @@ namespace CAS.DB.Migrations
                             CreatedById = new Guid("00000000-0000-0000-0000-000000000001"),
                             CreatedOn = new DateTimeOffset(new DateTime(2025, 6, 23, 20, 33, 55, 877, DateTimeKind.Unspecified).AddTicks(8930), new TimeSpan(0, 0, 0, 0, 0)),
                             Description = "Court Room",
-                            DisplayColor = "#ffb007",
+                            DisplayColor = "#189fd4",
                             IsSystem = true,
                             Name = "CourtRoom",
                             SortOrder = 1
@@ -1745,7 +1748,7 @@ namespace CAS.DB.Migrations
                             CreatedById = new Guid("00000000-0000-0000-0000-000000000001"),
                             CreatedOn = new DateTimeOffset(new DateTime(2025, 6, 23, 20, 33, 55, 877, DateTimeKind.Unspecified).AddTicks(8933), new TimeSpan(0, 0, 0, 0, 0)),
                             Description = "Court Assignment",
-                            DisplayColor = "#189fd4",
+                            DisplayColor = "#ffb007",
                             Name = "CourtRole",
                             SortOrder = 2
                         },

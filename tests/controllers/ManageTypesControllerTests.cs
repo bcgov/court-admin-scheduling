@@ -35,7 +35,7 @@ namespace tests.controllers
             await Db.Database.EnsureDeletedAsync();
             var courtRole = new AddLookupCodeDto
             {
-                Type = LookupTypes.CourtRole,
+                Type = (int) LookupTypes.CourtRole,
             };
             var controllerResult = await _controller.Add(courtRole);
             var response = HttpResponseTest.CheckForValid200HttpResponseAndReturnValue(controllerResult);
@@ -48,11 +48,11 @@ namespace tests.controllers
         {
             await Db.Database.EnsureDeletedAsync();
             await AddCourtRole();
-            var controllerResult = await _controller.GetAll(LookupTypes.CourtRole, 5);
+            var controllerResult = await _controller.GetAll(LookupTypes.CourtRole.ToString(), 5);
             var response = HttpResponseTest.CheckForValid200HttpResponseAndReturnValue(controllerResult);
             Assert.True(response.Count >= 1);
 
-            var controllerResult2 = await _controller.GetAll(LookupTypes.EscortRun, 5);
+            var controllerResult2 = await _controller.GetAll(LookupTypes.EscortRun.ToString(), 5);
             var response2 = HttpResponseTest.CheckForValid200HttpResponseAndReturnValue(controllerResult2);
             Assert.True(response2.Count == 0);
         }
@@ -76,7 +76,7 @@ namespace tests.controllers
             result.EffectiveDate = DateTime.Now;
             result.Code = "gg";
             result.SubCode = "gg2";
-            result.Type = LookupTypes.JailRole;
+            result.Type = (int) LookupTypes.JailRole;
             result.LocationId = 6;
             result.SortOrderForLocation = new LookupSortOrderDto
             {
@@ -91,7 +91,7 @@ namespace tests.controllers
 
             Assert.Equal("test", result.Description);
             Assert.Equal(DateTimeOffset.Now.DateTime, result.EffectiveDate.Value.DateTime, TimeSpan.FromSeconds(10));
-            Assert.Equal(LookupTypes.JailRole, result.Type);
+            Assert.Equal((int) LookupTypes.JailRole, result.Type);
             Assert.Equal("gg", result.Code);
             Assert.Equal("gg2", result.SubCode);
             Assert.Equal(6, result.LocationId);
@@ -109,7 +109,7 @@ namespace tests.controllers
 
             var courtRole = new AddLookupCodeDto
             {
-                Type = LookupTypes.CourtRole,
+                Type = (int) LookupTypes.CourtRole,
                 LocationId = 66
             };
             var controllerResult = await _controller.Add(courtRole);
@@ -124,7 +124,7 @@ namespace tests.controllers
 
             courtRole = new AddLookupCodeDto
             {
-                Type = LookupTypes.CourtRole,
+                Type = (int) LookupTypes.CourtRole,
                 LocationId = 5
             };
             controllerResult = await _controller.Add(courtRole);
@@ -160,7 +160,7 @@ namespace tests.controllers
             var courtRole = new AddLookupCodeDto
             {
                 Description = "test",
-                Type = LookupTypes.CourtRole,
+                Type = (int) LookupTypes.CourtRole,
                 LocationId = 5
             };
             var controllerResult = await _controller.Add(courtRole);

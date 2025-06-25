@@ -40,7 +40,7 @@ namespace CAS.API.controllers
 
         [HttpGet]
         [PermissionClaimAuthorize(perm: Permission.Login)]
-        public async Task<ActionResult<List<LookupCodeDto>>> GetAll(LookupTypes? codeType, int? locationId, bool showExpired = false)
+        public async Task<ActionResult<List<LookupCodeDto>>> GetAll(string codeType, int? locationId, bool showExpired = false)
         {
             var lookupCodesDtos = (await ManageTypesService.GetAll(codeType, locationId, showExpired)).Adapt<List<LookupCodeDto>>();
             return Ok(lookupCodesDtos);

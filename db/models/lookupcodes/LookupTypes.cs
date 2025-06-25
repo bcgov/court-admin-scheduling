@@ -11,4 +11,11 @@
         TrainingType,
         CourtAdminRank
     }
+    public enum LookupTypeCategory
+    {
+        Assignment,
+        Leave,
+        Training,
+        Rank
+    }
 }

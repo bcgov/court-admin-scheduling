@@ -215,18 +215,10 @@
         saveOrderFlag = false;
 
         assignmentList: assignmentTypeInfoType[] = [];
-        selectedAssignmentType = {name:'CourtRoom', label:'Court Room'};
-        previousSelectedAssignmentType = {name:'CourtRoom', label:'Court Room'};
-        
-        assignmentTypeTabs = 
-        [
-            {name:'CourtRoom', label:'Court Room'},
-            {name:'CourtRole', label:'Court Assignment'},
-            {name:'JailRole', label:'Jail Assignment'},
-            {name:'EscortRun', label:'Transport Assignment'},
-            {name:'OtherAssignment', label:'Other Assignment'},
-        ]
-
+        //todo:
+        assignmentTypeTabs: { name: string; code: number; label: string }[] = [];
+        selectedAssignmentType: { name: string; code: number; label: string } = {name: 'CourtRoom', code: 0, label: 'Court Room'};
+        previousSelectedAssignmentType: { name: string; code: number; label: string } = {name: 'CourtRoom', code: 0, label: 'Court Room'};
         fields =  
         [     
             {key:'sortOrder', label:'', sortable:false, tdClass: 'border-top' },       
@@ -260,8 +252,10 @@
 
         mounted () 
         {  
-            this.getAssignmentTypesPermissions();
-            this.getAssignments()       
+            this.fetchAssignmentTypeTabs().then(() => {
+                this.getAssignmentTypesPermissions();
+                this.getAssignments();
+            });       
         }
 
         public getAssignmentTypesPermissions() {
@@ -290,6 +284,28 @@
                         this.isAssignmentDataMounted=true;
                     }) 
             });       
+        }
+
+        public async fetchAssignmentTypeTabs() {
+            const url = '/api/lookuptype/actives?category=Assignment';
+            try {
+                const response = await this.$http.get(url);
+                    if (response.data && Array.isArray(response.data)) {
+                        this.assignmentTypeTabs = response.data.map((item: any) => ({
+                            name: item.name,
+                            code: item.code,
+                            label: item.description
+                        }));
+                        // Optionally set default selectedAssignmentType
+                        if (this.assignmentTypeTabs.length > 0) {
+                            this.selectedAssignmentType = this.assignmentTypeTabs[0];
+                            this.previousSelectedAssignmentType = this.assignmentTypeTabs[0];
+                        }
+                    }
+            } catch (err) {
+                this.errorText = `Error fetching assignment types`;
+                this.openErrorModal = true;
+            }
         }
 
         public extractAssignments(assignmentsJson) {
@@ -425,7 +441,7 @@
         public saveAssignment(body, iscreate){
             this.assignmentError = false;
             //console.log(body) 
-            body['type']= this.selectedAssignmentType.name;
+            body['type']= this.selectedAssignmentType.code;
             body['description'] = body.code;
             const method = iscreate? 'post' :'put';            
             const url = 'api/managetypes'  

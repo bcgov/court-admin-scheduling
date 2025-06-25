@@ -64,6 +64,7 @@ namespace CAS.API.infrastructure
             services.AddHttpContextAccessor();
             services.AddTransient(s => s.GetService<IHttpContextAccessor>().HttpContext.User);
             services.AddScoped<ManageTypesService>();
+            services.AddScoped<LookupTypeService>();
             services.AddScoped<ChesEmailService>();
             services.AddScoped<ClaimsService>();
             services.AddScoped<RoleService>();

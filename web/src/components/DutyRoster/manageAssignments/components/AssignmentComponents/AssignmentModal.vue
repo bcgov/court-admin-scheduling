@@ -188,7 +188,7 @@
                         :key="color">
                         <b-row class="m-0 p-0">
                             <div :style="{backgroundColor:dutyColorsCode[color], width:'0.7rem', height:'0.7rem', borderRadius:'25px', margin:'0.1rem .2rem 0 0'}"/>
-                            <div style="font-size:9px; text-transform: capitalize; margin:0 0 0 0; padding:0"> {{color.replace('Role','').replace('Assignment','').replace('EscortRun','Transport')}}</div>
+                            <div style="font-size:9px; text-transform: capitalize; margin:0 0 0 0; padding:0"> {{color}}</div>
                         </b-row>
                     </div>
                 </b-row>
@@ -395,6 +395,7 @@
                         code: duty.assignment?.lookupCode?.code,
                         name: duty.assignment?.name,
                         comment: duty.comment? duty.comment:"",
+                        //set color from the 
                         color: Vue.filter('getColorByType')(dutyType),
                         assignmentNotes: duty.assignment?.comment
                     } )

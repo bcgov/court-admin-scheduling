@@ -213,16 +213,16 @@
         deleteType = 'expire'; // 'unexpire'
         leaveTrainingToDelete = {} as leaveTrainingTypeInfoType;
 
-        leaveTrainingList: leaveTrainingTypeInfoType[] = [];
-        selectedLeaveTrainingType = {name:'LeaveType', label:'Leave'};
-        previousSelectedLeaveTrainingType = {name:'LeaveType', label:'Leave'};
-        
         leaveTrainingTypeTabs = 
         [
-            {name:'LeaveType', label:'Leave'},
-            {name:'TrainingType', label:'Training'}
+            {name:'LeaveType', code:5, label:'Leave'},
+            {name:'TrainingType', code:6, label:'Training'}
         ]
-
+        
+        leaveTrainingList: leaveTrainingTypeInfoType[] = [];
+        selectedLeaveTrainingType = this.leaveTrainingTypeTabs[0]
+        previousSelectedLeaveTrainingType = this.leaveTrainingTypeTabs[0];
+        
         fields = [     
             {key:'sortOrder', label:'', sortable:false, tdClass: 'border-top' },       
             {key:'code', label:'', sortable:false, tdClass: 'border-top'  },
@@ -423,7 +423,7 @@
 
         public saveLeaveTraining(body, iscreate){
             this.leaveTrainingError = false;
-            body['type'] = this.selectedLeaveTrainingType.name;
+            body['type'] = this.selectedLeaveTrainingType.code;
             body['description'] = body.code;
             const method = iscreate? 'post' :'put';            
             const url = 'api/managetypes'  

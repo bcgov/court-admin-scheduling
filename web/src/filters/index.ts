@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import axios from 'axios'
 import moment from 'moment-timezone';
 
 
@@ -213,19 +214,21 @@ Vue.filter('autoCompleteTime', function(time){
     return result
 })
 
-Vue.filter('getColorByType', function(type: string){
-    const dutyColors = [
-        {name:'courtroom',  colorCode:'#189fd4'},
-        {name:'court',      colorCode:'#189fd4'},
-        {name:'jail' ,      colorCode:'#A22BB9'},
-        {name:'escort',     colorCode:'#ffb007'},
-        {name:'other',      colorCode:'#7a4528'}, 
-        {name:'overtime',   colorCode:'#e85a0e'},
-        {name:'free',       colorCode:'#e6d9e2'}                        
-    ]
-    for(const color of dutyColors){
-        if(type.toLowerCase().includes(color.name))return color
+Vue.filter('getColorByType', function(type: string | number){
+    
+    const dutyColors = (window as any).dutyColors
+    const typeStr = typeof type === 'number' ? type.toString() : (type || '').toString().toLowerCase();
+    for (const color of dutyColors) {
+        // Match by code (number or string)
+        if (color.code && typeStr === color.code.toString().toLowerCase()) {
+            return color;
+        }
+        // Match by name (case-insensitive)
+        if (color.name && typeStr.includes(color.name.toLowerCase())) {
+            return color;
+        }
     }
+
     return dutyColors[3]
 })
 
