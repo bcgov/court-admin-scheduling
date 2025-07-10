@@ -26,9 +26,14 @@ namespace CAS.API.services.scheduling
                 .Include(a => a.LookupCode)
                 .ThenInclude(lc => lc.SortOrder.Where(so => so.LocationId == locationId))
                 .Where(a => a.LocationId == locationId && (a.ExpiryDate == null || a.ExpiryDate > start))
-                .OrderBy(a => (int)a.LookupCode.Type)
-                .ThenBy(a => a.LookupCode.SortOrder.First().SortOrder)
-                .ThenBy(a => a.LookupCodeId)
+                .Join(Db.LookupType,
+                    assignment => assignment.LookupCode.Type,
+                    lookupType => lookupType.Code,
+                    (assignment, lookupType) => new { Assignment = assignment, LookupType = lookupType })
+                .OrderBy(x => x.LookupType.Category)
+                .ThenBy(x => x.LookupType.SortOrder)
+                .ThenBy(x => x.Assignment.LookupCodeId)
+                .Select(x => x.Assignment)
                 .ToListAsync();
 
             //Ensure we include assignments that have duties within this time range. 
