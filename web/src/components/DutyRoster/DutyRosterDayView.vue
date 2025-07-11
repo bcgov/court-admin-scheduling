@@ -352,7 +352,7 @@
                             endBin: dutyRangeBin.endBin,
                             name: color.name,
                             colorCode: color.colorCode,
-                            color: (duty.isOvertime||shiftInfo.overtimeHours>0)? this.dutyColors2[5].colorCode:color.colorCode,
+                            color: (duty.isOvertime||shiftInfo.overtimeHours>0)? this.dutyColors2.find(x=> x.name === 'overtime')?.colorCode || '#e85a0e':color.colorCode,
                             type: duty.assignmentLookupCode.type,
                             code: duty.assignmentLookupCode.code
                         })

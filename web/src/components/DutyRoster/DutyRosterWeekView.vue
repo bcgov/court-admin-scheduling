@@ -316,7 +316,7 @@
                             endTime:moment(duty.endDate).tz(this.location.timezone).format(),
                             name: color.name,
                             colorCode: color.colorCode,
-                            color: duty.isOvertime? this.dutyColors[5].colorCode:color.colorCode,
+                            color: duty.isOvertime? this.dutyColors2.find(x=> x.name === 'overtime')?.colorCode || '#e85a0e':color.colorCode,
                             type: duty.assignmentLookupCode.type,
                             code: duty.assignmentLookupCode.code
                         })
