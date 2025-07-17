@@ -4,6 +4,7 @@ using System.Text.Json;
 using CAS.DB.models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CAS.DB.Migrations
 {
     [DbContext(typeof(CourtAdminDbContext))]
-    partial class CourtAdminDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250717200555_addLocation")]
+    partial class addLocation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1681,187 +1684,6 @@ namespace CAS.DB.Migrations
                         });
                 });
 
-            modelBuilder.Entity("CAS.DB.models.lookupcodes.LookupType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-                    NpgsqlPropertyBuilderExtensions.HasIdentityOptions(b.Property<int>("Id"), 100L, null, null, null, null, null);
-
-                    b.Property<string>("Abbreviation")
-                        .HasColumnType("text");
-
-                    b.Property<int>("Category")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Code")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasDefaultValueSql("nextval('\"LookupType_Code_seq\"')");
-
-                    b.Property<uint>("ConcurrencyToken")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("xid")
-                        .HasColumnName("xmin");
-
-                    b.Property<Guid?>("CreatedById")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTimeOffset>("CreatedOn")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("text");
-
-                    b.Property<string>("DisplayColor")
-                        .HasColumnType("text");
-
-                    b.Property<DateTimeOffset?>("ExpiryDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<bool?>("IsSystem")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int?>("SortOrder")
-                        .HasColumnType("integer");
-
-                    b.Property<Guid?>("UpdatedById")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTimeOffset?>("UpdatedOn")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Code")
-                        .IsUnique();
-
-                    b.HasIndex("CreatedById");
-
-                    b.HasIndex("Name")
-                        .IsUnique();
-
-                    b.HasIndex("UpdatedById");
-
-                    b.ToTable("LookupType");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Abbreviation = "CR",
-                            Category = 0,
-                            Code = 0,
-                            ConcurrencyToken = 0u,
-                            CreatedById = new Guid("00000000-0000-0000-0000-000000000001"),
-                            CreatedOn = new DateTimeOffset(new DateTime(2025, 6, 23, 20, 33, 55, 877, DateTimeKind.Unspecified).AddTicks(8930), new TimeSpan(0, 0, 0, 0, 0)),
-                            Description = "Court Room",
-                            DisplayColor = "#ffb007",
-                            IsSystem = true,
-                            Name = "CourtRoom",
-                            SortOrder = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Abbreviation = "CA",
-                            Category = 0,
-                            Code = 1,
-                            ConcurrencyToken = 0u,
-                            CreatedById = new Guid("00000000-0000-0000-0000-000000000001"),
-                            CreatedOn = new DateTimeOffset(new DateTime(2025, 6, 23, 20, 33, 55, 877, DateTimeKind.Unspecified).AddTicks(8933), new TimeSpan(0, 0, 0, 0, 0)),
-                            Description = "Court Assignment",
-                            DisplayColor = "#189fd4",
-                            Name = "CourtRole",
-                            SortOrder = 2
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Abbreviation = "J",
-                            Category = 0,
-                            Code = 2,
-                            ConcurrencyToken = 0u,
-                            CreatedById = new Guid("00000000-0000-0000-0000-000000000001"),
-                            CreatedOn = new DateTimeOffset(new DateTime(2025, 6, 23, 20, 33, 55, 877, DateTimeKind.Unspecified).AddTicks(8935), new TimeSpan(0, 0, 0, 0, 0)),
-                            Description = "Jail Assignment",
-                            DisplayColor = "#A22BB9",
-                            Name = "JailRole",
-                            SortOrder = 3
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Abbreviation = "T",
-                            Category = 0,
-                            Code = 3,
-                            ConcurrencyToken = 0u,
-                            CreatedById = new Guid("00000000-0000-0000-0000-000000000001"),
-                            CreatedOn = new DateTimeOffset(new DateTime(2025, 6, 23, 20, 33, 55, 877, DateTimeKind.Unspecified).AddTicks(8936), new TimeSpan(0, 0, 0, 0, 0)),
-                            Description = "Transport Assignment",
-                            DisplayColor = "#ffb007",
-                            Name = "EscortRun",
-                            SortOrder = 4
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Abbreviation = "O",
-                            Category = 0,
-                            Code = 4,
-                            ConcurrencyToken = 0u,
-                            CreatedById = new Guid("00000000-0000-0000-0000-000000000001"),
-                            CreatedOn = new DateTimeOffset(new DateTime(2025, 6, 23, 20, 33, 55, 877, DateTimeKind.Unspecified).AddTicks(8938), new TimeSpan(0, 0, 0, 0, 0)),
-                            Description = "Other Assignment",
-                            DisplayColor = "#7a4528",
-                            Name = "OtherAssignment",
-                            SortOrder = 5
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Category = 1,
-                            Code = 5,
-                            ConcurrencyToken = 0u,
-                            CreatedById = new Guid("00000000-0000-0000-0000-000000000001"),
-                            CreatedOn = new DateTimeOffset(new DateTime(2025, 6, 23, 20, 33, 55, 877, DateTimeKind.Unspecified).AddTicks(8939), new TimeSpan(0, 0, 0, 0, 0)),
-                            Description = "Leave Type",
-                            Name = "LeaveType",
-                            SortOrder = 1
-                        },
-                        new
-                        {
-                            Id = 7,
-                            Category = 2,
-                            Code = 6,
-                            ConcurrencyToken = 0u,
-                            CreatedById = new Guid("00000000-0000-0000-0000-000000000001"),
-                            CreatedOn = new DateTimeOffset(new DateTime(2025, 6, 23, 20, 33, 55, 877, DateTimeKind.Unspecified).AddTicks(8941), new TimeSpan(0, 0, 0, 0, 0)),
-                            Description = "Training Type",
-                            Name = "TrainingType",
-                            SortOrder = 1
-                        },
-                        new
-                        {
-                            Id = 8,
-                            Category = 3,
-                            Code = 7,
-                            ConcurrencyToken = 0u,
-                            CreatedById = new Guid("00000000-0000-0000-0000-000000000001"),
-                            CreatedOn = new DateTimeOffset(new DateTime(2025, 6, 23, 20, 33, 55, 877, DateTimeKind.Unspecified).AddTicks(8942), new TimeSpan(0, 0, 0, 0, 0)),
-                            Description = "Court Admin Rank",
-                            Name = "CourtAdminRank",
-                            SortOrder = 1
-                        });
-                });
-
             modelBuilder.Entity("CAS.DB.models.scheduling.Assignment", b =>
                 {
                     b.Property<int>("Id")
@@ -2603,21 +2425,6 @@ namespace CAS.DB.Migrations
                     b.Navigation("Location");
 
                     b.Navigation("LookupCode");
-
-                    b.Navigation("UpdatedBy");
-                });
-
-            modelBuilder.Entity("CAS.DB.models.lookupcodes.LookupType", b =>
-                {
-                    b.HasOne("CAS.DB.models.auth.User", "CreatedBy")
-                        .WithMany()
-                        .HasForeignKey("CreatedById");
-
-                    b.HasOne("CAS.DB.models.auth.User", "UpdatedBy")
-                        .WithMany()
-                        .HasForeignKey("UpdatedById");
-
-                    b.Navigation("CreatedBy");
 
                     b.Navigation("UpdatedBy");
                 });
