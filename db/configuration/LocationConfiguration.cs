@@ -19,7 +19,10 @@ namespace CAS.DB.configuration
                 new Location { Id = 3, AgencyId = "SS3", CreatedById = User.SystemUser, Name = "Central Float Pool", Timezone = "America/Vancouver" },
                 new Location { Id = 4, AgencyId = "SS4", CreatedById = User.SystemUser, Name = "ITAU", Timezone = "America/Vancouver" },
                 new Location { Id = 5, AgencyId = "SS5", CreatedById = User.SystemUser, Name = "Office of the Chief CourtAdmin", Timezone = "America/Vancouver" },
-                new Location { Id = 6, AgencyId = "SS6", JustinCode = "4882", CreatedById = User.SystemUser, Name = "South Okanagan Escort Centre", Timezone = "America/Vancouver" }
+                new Location { Id = 6, AgencyId = "SS6", JustinCode = "4882", CreatedById = User.SystemUser, Name = "South Okanagan Escort Centre", Timezone = "America/Vancouver" },
+                new Location { Id = 7, AgencyId = "SS7", RegionId = 1, CreatedById = User.SystemUser, Name = "Vancouver Island Virtual Registry (VIVR)", Timezone = "America/Vancouver" },
+                new Location { Id = 8, AgencyId = "SS8", RegionId = 1, CreatedById = User.SystemUser, Name = "Virtual Bail", Timezone = "America/Vancouver" },
+                new Location { Id = 9, AgencyId = "SS9", RegionId = 1, CreatedById = User.SystemUser, Name = "Vancouver Island Regional HQ", Timezone = "America/Vancouver" }
             );
 
             builder.HasOne(b => b.Region).WithMany().HasForeignKey(m => m.RegionId).OnDelete(DeleteBehavior.SetNull);
@@ -30,3 +33,5 @@ namespace CAS.DB.configuration
         }
     }
 }
+
+
