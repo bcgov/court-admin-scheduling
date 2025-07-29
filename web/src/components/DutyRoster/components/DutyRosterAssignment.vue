@@ -466,13 +466,22 @@
 			{name:'Sat', diff:6, enabled: true},
 		]
 
-		assignmentTypeOptions = [
-			{name:'CourtRoom', label:'Court Room'},
-			{name:'CourtRole', label:'Court Assignment'},
-			{name:'JailRole', label:'Jail Assignment'},
-			{name:'EscortRun', label:'Transport Assignment'},
-			{name:'OtherAssignment', label:'Other Assignment'}
-		]
+		assignmentTypeOptions: { name: string; code: number; label: string }[] = [];
+
+		async fetchAssignmentTypeOptions() {
+			try {
+				const url = '/api/lookuptype/actives?category=Assignment';
+				const response = await this.$http.get(url);
+				this.assignmentTypeOptions = response.data.map(item => ({
+					name: item.name,
+					code: item.code,
+					label: item.description
+				}));
+			} catch (err) {
+				// handle error if needed
+				console.error('Error fetching assignment type options:', err);
+			}
+		}
 
 		assignmentSubTypeOptions = [] as assignmentSubTypeInfoType[];
 		assignmentError = false;
@@ -489,7 +498,7 @@
 		errorText='';
 		openErrorModal=false;
 
-        mounted(){
+        async mounted(){
 			this.hasPermissionToEditAssignment = this.userDetails.permissions.includes("EditAssignments");
             this.hasPermissionToExpireAssignment = this.userDetails.permissions.includes("ExpireAssignments");    
             this.hasPermissionToAddAssignDuty = this.userDetails.permissions.includes("CreateAndAssignDuties");    
@@ -497,6 +506,7 @@
 			this.assignmentTitle = Vue.filter('capitalize')(this.assignment.code);
             this.selectedExipryDate = this.localTime.timeString;
 			this.isDeleted = this.determineExpired();
+			await this.fetchAssignmentTypeOptions();
 		}
 
 		public determineExpired(){
@@ -669,8 +679,8 @@
 			if (assignmentInfo.saturday) this.selectedDays.push(6)
 			
 			const assignmentType = assignmentInfo.lookupCode.type;
-			this.assignmentToEditType = this.assignmentTypeOptions.filter(option => {if (option.name == assignmentType) return true})[0];			
-			this.assignmentToEdit.type = assignmentType;
+			this.assignmentToEditType = this.assignmentTypeOptions.filter(option => option.code.toString() === assignmentType.toString())[0];			
+			this.assignmentToEdit.type = this.assignmentToEditType.name;
 			this.originalAssignmentToEdit.type = this.assignmentToEdit.type;
 			this.loadSubTypes(this.assignmentToEditType);
 		}
