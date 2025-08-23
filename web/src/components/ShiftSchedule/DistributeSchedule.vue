@@ -38,8 +38,8 @@
                     <loading-spinner :inline="true"/>
                 </template> 
                 <div v-for="page,inx in courtAdminPages" :key="'pdf-'+inx" class="cas-body">   
-                    <weekly-schedule :key="updateTable" :fields="fields"  :courtAdminSchedules="courtAdminSchedules.slice(page.start,page.end)" v-if="weekView" />
-                    <daily-schedule :key="updateDailyTable" :dailyCourtAdminSchedules="dailyCourtAdminSchedules.slice(page.start,page.end)" v-else/>
+                    <weekly-schedule :key="updateTable" :fields="fields" :courtAdminSchedules="courtAdminSchedules.slice(page.start,page.end)" :isStaffView="isStaffView" v-if="weekView" />
+                    <daily-schedule :key="updateDailyTable" :dailyCourtAdminSchedules="dailyCourtAdminSchedules.slice(page.start,page.end)" :isStaffView="isStaffView" v-else/>
 
                     <div v-if="!isDistributeDataMounted && courtAdminSchedules.length == 0" style="min-height:115.6px;">
                     </div>
@@ -110,6 +110,7 @@
 
         isDistributeDataMounted = false;
         weekView = false;
+        isStaffView = false;
         headerDates: string[] = [];
         today = '';
         numberOfheaderDates = 7;
@@ -153,7 +154,7 @@
         locationChange()
         {
             if (this.isDistributeDataMounted) {
-                this.loadScheduleInformation(true, '');
+                this.loadScheduleInformation(true, '', this.isStaffView);
             }            
         }
 
@@ -164,10 +165,11 @@
             this.today = moment().tz(this.location.timezone).format();
         }
 
-        public loadScheduleInformation(weekView: boolean, courtAdminId: string) {                       
+        public loadScheduleInformation(weekView: boolean, courtAdminId: string, isStaffView = false) {                       
             
             this.isDistributeDataMounted=false;
             this.weekView = weekView;
+            this.isStaffView = isStaffView;
             this.headerDate();
             
             let url = '';

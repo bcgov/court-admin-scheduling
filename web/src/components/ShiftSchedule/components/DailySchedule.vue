@@ -48,10 +48,11 @@
                         <div style="font-size: 6pt; border: none; line-height: 0.55rem;" class="m-0 p-0" v-for="duty,inx in sortEvents(data.item.courtAdminEvent.duties)" :key="'duty-name-'+inx+'-'+duty.startTime">                                
                             <div v-if="duty.dutyType=='Training' || duty.dutyType=='Leave' || duty.dutyType=='Loaned'">
                                 <div  style="margin:0 1rem; text-align: center; border-bottom: 1px solid #ccc;">
-                                    <div class="badge my-1 " :style="{fontSize:'6pt', background: getColor(duty.dutySubType)}">{{ duty.dutyType }}</div>                            
+                                    <div v-if="duty.dutyType!='Leave' || !isStaffView" class="badge my-1 " :style="{fontSize:'6pt', background: getColor(duty.dutySubType)}">{{ duty.dutyType }}</div>                            
                                     <div>
-                                        <b> {{duty.startTime}}-{{duty.endTime}}</b>  
-                                        <span > {{duty.dutySubType}} </span>
+                                        <b :style="isStaffView && duty.dutyType=='Leave' ? 'color: #6c757d;' : ''"> {{duty.startTime}}-{{duty.endTime}}</b>  
+                                        <span v-if="isStaffView && duty.dutyType=='Leave'" style="color: #6c757d;"> Off</span>
+                                        <span v-else> {{duty.dutySubType}} </span>
                                     </div>
                                 </div>
                             </div>                            
@@ -66,7 +67,10 @@
                     
                     <div v-else-if="data.item.courtAdminEvent.type == 'Leave'" class="text-center middle-text">                                         
                         <div  class="m-0 p-0" style="">                    
-                            <div :style="{background:getColor(data.item.courtAdminEvent.subType)}" class=" text-white">
+                            <div v-if="isStaffView" style="background:#6c757d;" class="text-white">
+                                <div>Off</div>
+                            </div>
+                            <div v-else :style="{background:getColor(data.item.courtAdminEvent.subType)}" class=" text-white">
                                 <div>Leave</div> {{ data.item.courtAdminEvent.subType }}
                             </div>
                         </div>
@@ -130,6 +134,9 @@
 
         @Prop({required: true})
         dailyCourtAdminSchedules!: distributeScheduleInfoType[];        
+
+        @Prop({default: false})
+        isStaffView!: boolean;
         
         @commonState.State
         public location!: locationInfoType;
