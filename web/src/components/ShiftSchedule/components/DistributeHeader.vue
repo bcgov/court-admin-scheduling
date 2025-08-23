@@ -76,6 +76,11 @@
                                 <div style="font-size: 16px;" class="text-white">{{viewRange}}</div>
                             </b-form-checkbox>
                         </div>
+                        <div :class="isStaffViewChecked?'bg-info':''" style="border:1px solid #17a2b8;border-radius:5px; margin-left: 15px; width: 8.5rem;">
+                            <b-form-checkbox class="mx-1 my-1" v-model="isStaffViewChecked" @change="getSchedule()" size="lg" switch>
+                                <div style="font-size: 16px;" class="text-white">Staff View</div>
+                            </b-form-checkbox>
+                        </div>
                         <div v-b-tooltip.hover.noninteractive
                             title="Print Schedule">
                             <b-button 
@@ -235,6 +240,7 @@
         selectedDate = '';
         datePickerOpened = false;		
         showWeekViewChecked = true;
+        isStaffViewChecked = false;
         hasPermissionToViewDutyRoster = false;
         pdfType=''
         errorMsg = ''
@@ -291,7 +297,7 @@
         public getSchedule() {            			
             Vue.nextTick(()=>{
                 this.selectedDate = this.dailyShiftRangeInfo.startDate;
-                this.$emit('change', this.showWeekViewChecked, this.selectedTeamMember.courtAdminId)
+                this.$emit('change', this.showWeekViewChecked, this.selectedTeamMember.courtAdminId, this.isStaffViewChecked)
             })
         }
 

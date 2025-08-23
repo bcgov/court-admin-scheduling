@@ -15,9 +15,11 @@
                     <div style="font-size: 6pt; border: none; line-height: 0.55rem;" class="m-0 p-0" v-for="duty,inx in sortEvents(courtAdminEvent.duties)" :key="'duty-name-'+inx+'-'+duty.startTime">                                
                         <div :style="'color: ' + duty.color">
                             <b v-if="duty.isOvertime">*</b>                            
-                            <b> {{duty.startTime}}-{{duty.endTime}}</b>  
+                            <b :style="isStaffView && duty.dutyType=='Leave' ? 'color: #6c757d;' : ''"> {{duty.startTime}}-{{duty.endTime}}</b>  
                             <span v-if="duty.dutyType!='Training' && duty.dutyType!='Leave' && duty.dutyType!='Loaned'" > {{duty.dutySubType}} </span>
-                            {{ getTypeAbrv(duty.dutyType) }}
+                            <span v-if="duty.dutyType=='Leave' && isStaffView" style="color: #6c757d;"> Off</span>
+                            <span v-else-if="duty.dutyType=='Leave'">{{ getTypeAbrv(duty.dutyType) }}</span>
+                            <span v-else>{{ getTypeAbrv(duty.dutyType) }}</span>
                         </div>                            
                     </div>                    
                 </div>                    
@@ -31,7 +33,10 @@
             
             <div v-else-if="courtAdminEvent.type == 'Leave'" class="text-center middle-text">                                         
                 <div  class="m-0 p-0" style="">                    
-                    <div :style="{background:getColor(courtAdminEvent.subType)}" class=" text-white">
+                    <div v-if="isStaffView" style="background:#6c757d;" class="text-white">
+                        <div>Off</div>
+                    </div>
+                    <div v-else :style="{background:getColor(courtAdminEvent.subType)}" class=" text-white">
                         <div>Leave</div> {{ courtAdminEvent.subType }}
                     </div>
                 </div>
@@ -80,6 +85,9 @@
 
         @Prop({ required: true })
         abbreviations!: { [key: string]: string };
+
+        @Prop({default: false})
+        isStaffView!: boolean;
 
         @commonState.State
         public location!: locationInfoType;

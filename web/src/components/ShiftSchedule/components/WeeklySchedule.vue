@@ -51,7 +51,8 @@
                 <weekly-assignment-card 
                 :scheduleInfo="data.item[data.field.key]"
                 :abbreviations="abbreviations"
-                :dutyColors2="dutyColors2" />                
+                :dutyColors2="dutyColors2" 
+                :isStaffView="isStaffView" />                
             </template>                
             
         </b-table>
@@ -83,6 +84,9 @@
 
         @Prop({required: true})
         fields!: any[];
+
+        @Prop({default: false})
+        isStaffView!: boolean;
 
         dutyColors2: { name: string; code: number; colorCode: string }[] = [];
         isDutyColorsLoaded = false;
