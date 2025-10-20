@@ -20,27 +20,27 @@
             </template>
 
             <template v-slot:cell(myteam) = "data" >
-                <div style="line-height:1rem; font-size: 7.5pt; font-weight: 700;">
+                <div style="line-height:1rem; font-size: 10pt; font-weight: 700;">
                     {{data.value.name}}
                 </div>
                 <div style="line-height:0.75rem;"                    
                     v-if="data.value.homeLocation != location.name">
                     <div class="m-0 p-0 text-jail"> 
                         <b-icon-box-arrow-in-right style="float:left;margin:0 .2rem 0 0;"/>
-                        <div style="float:left;font-size: 7.5pt; margin:0 .1rem 0 0;">Loaned in from </div>
+                        <div style="float:left;font-size: 10pt; margin:0 .1rem 0 0;">Loaned in from </div>
                     </div> 
-                    <div class="m-0 p-0 text-jail" style="font-size: 7.5pt;"> {{data.value.homeLocation|truncate(35)}} </div>
+                    <div class="m-0 p-0 text-jail" style="font-size: 10pt;"> {{data.value.homeLocation|truncate(35)}} </div>
                 </div>
             
                 <div class="row m-0" style="line-height:0.75rem;">
-                    <div style="font-size: 7.5pt; margin:0 .25rem 0 0;">
+                    <div style="font-size: 10pt; margin:0 .25rem 0 0;">
                         {{data.value.rank}}
                     </div>
-                    <div class="m-0 p-0" style="font-size: 7.5pt;"> #{{data.value.badgeNumber}} </div>
+                    <div class="m-0 p-0" style="font-size: 10pt;"> #{{data.value.badgeNumber}} </div>
                 </div>
                 
                 <div style="line-height:0.75rem;">
-                    <div v-if="data.value.actingRank.length>0" style="font-size: 7.5pt; font-weight: 700;"> 
+                    <div v-if="data.value.actingRank.length>0" style="font-size: 10pt; font-weight: 700;"> 
                         <span class="dot">A</span> <span style="font-weight: 500;">{{data.value.actingRank[0].rank}}</span>
                     </div>
                 </div>

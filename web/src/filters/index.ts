@@ -340,14 +340,11 @@ Vue.filter('printPdf', function(html, pageFooterLeft, pageFooterRight){
             }`+
             `@media print{
                 div.cas-header {
-					position: fixed;
-					top: 0in;
-                    bottom: 1.5in;
 					width:100%; 
-					display:inline-block;
+					display:block;
 				}
                 div.cas-body {
-                    margin-top: 6rem;
+                    margin-top: 2rem;
                 }                
                 .new-page{
                     page-break-before: always;
