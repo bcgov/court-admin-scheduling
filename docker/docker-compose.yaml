@@ -69,6 +69,6 @@ services:
       - ./tmp:/tmp2
   
   pdf:
-    image: hassananv/weasyprint
+    image: bcgovimages/weasyprint:63
     ports:
       - 8083:5001
