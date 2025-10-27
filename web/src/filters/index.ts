@@ -372,6 +372,7 @@ Vue.filter('printPdf', function(html, pageFooterLeft, pageFooterRight){
             `@page label{font-size: 9pt;}            
             `+
             `.card {border: white;}`+
+            `.cas-header .card {border: 1px solid black !important; padding: 0.5rem 1rem !important; text-align: center !important;}`+
             `.table{border-collapse: collapse; width: 100%;}`+
             `tr {}`+
             `th {border: 1px solid black;}`+
