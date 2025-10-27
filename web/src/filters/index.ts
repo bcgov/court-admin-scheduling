@@ -341,8 +341,26 @@ Vue.filter('printPdf', function(html, pageFooterLeft, pageFooterRight){
             `@media print{
                 div.cas-header {
 					width:100%; 
-					display:block;
+					display:flex;
+                    justify-content: space-between;
+                    align-items: flex-start;
 				}
+                div.cas-header .row {
+                    width: 100% !important;
+                    margin: 0;
+                    display: flex;
+                    justify-content: space-between;
+                }
+                div.cas-header .row > div:first-child {
+                    width: auto !important;
+                }
+                div.cas-header .row > div:first-child > div > div:last-child {
+                    display: none;
+                }
+                div.cas-header .row > div:last-child {
+                    width: auto !important;
+                    margin: 0;
+                }
                 div.cas-body {
                     margin-top: 2rem;
                 }                
@@ -354,13 +372,13 @@ Vue.filter('printPdf', function(html, pageFooterLeft, pageFooterRight){
             `@page label{font-size: 9pt;}            
             `+
             `.card {border: white;}`+
-            `.table{border: 3px solid;width: 100%;}`+
-            `tr {border: 3px solid;}`+
-            `th {border: 3px solid black;}`+
+            `.table{border-collapse: collapse; width: 100%;}`+
+            `tr {}`+
+            `th {border: 1px solid black;}`+
             `table.printer td:has(.middle-text){ vertical-align: middle !important;}`+
-            `td {height: 2.5rem;border: 3px solid; width: 6.5rem;}`+
-            `td.my-team {height: 2.5rem;border: 3px solid; width: 7rem !important;}`+
-            `td.my-notes {height: 2.5rem;border: 3px solid; width: 17rem !important;}`+
+            `td {height: 2.5rem;border: 1px solid black; width: 6.5rem;}`+
+            `td.my-team {height: 2.5rem;border: 1px solid black; width: 7rem !important;}`+
+            `td.my-notes {height: 2.5rem;border: 1px solid black; width: 17rem !important;}`+
             `.bg-spl-leave {background-color: #ffee07;}`+
             `.bg-a-l-leave {background-color: #007bff;}`+
             `.bg-med-dental-leave {background-color: #f8a88a;}`+
