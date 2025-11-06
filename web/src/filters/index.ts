@@ -340,43 +340,88 @@ Vue.filter('printPdf', function(html, pageFooterLeft, pageFooterRight){
             }`+
             `@media print{
                 div.cas-header {
-					width:100%; 
-					display:flex;
+					width: 100%; 
+					display: flex;
                     justify-content: space-between;
-                    align-items: flex-start;
+                    align-items: center;
+                    margin-bottom: 1rem;
+                    padding: 0;
+                    gap: 0.5rem;
 				}
+                
+                div.cas-header.print-header {
+                    margin-top: 0;
+                    margin-bottom: 1rem;
+                }
+                
                 div.cas-header .row {
                     width: 100% !important;
-                    margin: 0;
+                    margin: 0 !important;
                     display: flex;
                     justify-content: space-between;
+                    align-items: center;
+                    gap: 0.5rem;
                 }
                 div.cas-header .row > div:first-child {
                     width: auto !important;
+                    display: flex;
+                    align-items: center;
+                    flex-shrink: 0;
+                }
+                div.cas-header .row > div:first-child .row {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.3rem;
+                    margin: 0 !important;
+                }
+                div.cas-header .row > div:first-child img {
+                    max-width: 50px;
+                    flex-shrink: 0;
+                }
+                div.cas-header .row > div:first-child > div {
+                    white-space: nowrap;
+                }
+                div.cas-header .row > div:first-child > div > div {
+                    white-space: nowrap;
                 }
                 div.cas-header .row > div:first-child > div > div:last-child {
                     display: none;
                 }
                 div.cas-header .row > div:last-child {
                     width: auto !important;
-                    margin: 0;
+                    max-width: 60%;
+                    margin: 0 !important;
+                    display: flex;
+                    align-items: center;
+                }
+                div.cas-header .card.border.border-dark.text-center {
+                    border: 1px solid black !important;
+                    text-align: center;
+                    padding: 0.3rem 0.5rem;
+                    margin: 0 !important;
+                    font-size: 9pt;
                 }
                 div.cas-body {
-                    margin-top: 2rem;
-                }                
+                    margin-top: 0.5rem;
+                }
+                div.cas-body:first-of-type {
+                    margin-top: 0.5rem;
+                }
+                div.cas-body .text-center.middle-text {
+                   vertical-align: middle !important;
+                   text-align: center;
+                }                    
                 .new-page{
                     page-break-before: always;
-                    position: relative; top: 8em;
+                    padding-top: 0;
                 }
             }`+ 
             `@page label{font-size: 9pt;}            
             `+
             `.card {border: white;}`+
-            `.cas-header .card {border: 1px solid black !important; padding: 0.5rem 1rem !important; text-align: center !important;}`+
             `.table{border-collapse: collapse; width: 100%;}`+
-            `tr {}`+
+            `tr {vertical-align: top !important;}`+
             `th {border: 1px solid black;}`+
-            `table.printer td:has(.middle-text){ vertical-align: middle !important;}`+
             `td {height: 2.5rem;border: 1px solid black; width: 6.5rem;}`+
             `td.my-team {height: 2.5rem;border: 1px solid black; width: 7rem !important;}`+
             `td.my-notes {height: 2.5rem;border: 1px solid black; width: 17rem !important;}`+
