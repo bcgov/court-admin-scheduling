@@ -7,7 +7,7 @@
             
             <div class="cas-header">
                 <div class="row m-0">
-                    <div style="width:45%" >
+                    <div style="width:45%;" >
                         <div class="row m-0">                           
                             <div style="width:20%;"  class="mr-0">
                                 <img style="width:80%;" 
@@ -37,7 +37,35 @@
                 <template #overlay>
                     <loading-spinner :inline="true"/>
                 </template> 
-                <div v-for="page,inx in courtAdminPages" :key="'pdf-'+inx" class="cas-body">   
+                <div v-for="page,inx in courtAdminPages" :key="'pdf-'+inx" class="cas-body">
+                    <!-- Print-only header for pages 2+ -->
+                    <div v-if="inx > 0" class="cas-header print-header d-none d-print-block">
+                        <div class="row m-0">
+                            <div style="width:45%;" >
+                                <div class="row m-0">                           
+                                    <div style="width:20%;"  class="mr-0">
+                                        <img style="width:80%;" 
+                                            src="../../../public/images/blank-crest.png"
+                                            alt="B.C. Gov"/>                                                                   
+                                    </div>                                
+                                    <div style="width:70%; margin-top:1.5rem;">
+                                        <div style="font-size:13pt;"><b></b></div>
+                                    </div>
+                                </div>
+                            </div>
+                        
+                            <div style="width:52%; margin-top: 0.2rem;" >
+                                <div class="card m-0 border border-dark text-center">
+                                    <div class="mt-1">{{location.name}} Schedule</div>
+                                    <div v-if="weekView" style="font-size:12pt;"><b>{{shiftRangeInfo.startDate | beautify-full-date}} - {{shiftRangeInfo.endDate | beautify-full-date}}</b></div>
+                                    <div v-else style="font-size:12pt;"><b>{{dailyShiftRangeInfo.startDate | beautify-full-date}}</b></div>                            
+                                    <div class="text-secondary" style="margin-bottom:0.5rem;">Summary as of: <b><i>{{today | beautify-date-time-weekday}}</i></b></div>                                
+                                </div>
+                            </div>            
+
+                        </div>
+                    </div>
+                    
                     <weekly-schedule :key="updateTable" :fields="fields" :courtAdminSchedules="courtAdminSchedules.slice(page.start,page.end)" :isStaffView="isStaffView" v-if="weekView" />
                     <daily-schedule :key="updateDailyTable" :dailyCourtAdminSchedules="dailyCourtAdminSchedules.slice(page.start,page.end)" :isStaffView="isStaffView" v-else/>
 

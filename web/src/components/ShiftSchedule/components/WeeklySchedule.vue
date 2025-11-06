@@ -124,12 +124,6 @@
     }
 </script>
 
-<style>
-    table.printer td:has(.middle-text){  
-        vertical-align: middle !important;
-    }
-</style>
-
 <style scoped lang="scss" src="@/styles/_pdf.scss">
 
 </style>
