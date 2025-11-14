@@ -184,10 +184,14 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import { namespace } from 'vuex-class';
 import PageHeader from "@components/common/PageHeader.vue";
 import sortDefineType from './utils/sortDefineType';
 import { defineTypeInfoType } from '@/types/ManageTypes';
 import AddTypesForm from './AddTypesForm.vue';
+
+import "@store/modules/AssignmentTypesInformation";
+const assignmentTypesState = namespace("AssignmentTypesInformation");
 
 @Component({
   components: {
@@ -199,6 +203,9 @@ import AddTypesForm from './AddTypesForm.vue';
   }
 })
 export default class DefineTypes extends Vue {
+  @assignmentTypesState.Action
+  ClearAssignmentTypesCache!: () => void;
+
   selectedCategory = 0; // Only Assignment for now
   categoryOption = { value: 0, label: 'Assignment' };
 
@@ -325,6 +332,7 @@ export default class DefineTypes extends Vue {
       ? this.$http.post('/api/lookuptype', body)
       : this.$http.put('/api/lookuptype', { ...body, id: formData.id });
     req.then(() => {
+      this.ClearAssignmentTypesCache();
       this.getTypes();
       this.closeTypeForm();
     }, err => {
@@ -357,6 +365,7 @@ export default class DefineTypes extends Vue {
     };
     this.$http.put('/api/lookuptype', body)
       .then(response => {
+        this.ClearAssignmentTypesCache();
         this.getTypes();
         this.closeTypeForm();
       }, err => {
@@ -383,6 +392,7 @@ export default class DefineTypes extends Vue {
     const url = `/api/lookuptype/${this.typeToDelete.id}/${this.deleteType}`;
     this.$http.put(url)
       .then(response => {
+        this.ClearAssignmentTypesCache();
         this.getTypes();
       }, err => {
         this.typeErrorMsg = err.response.data.error;
