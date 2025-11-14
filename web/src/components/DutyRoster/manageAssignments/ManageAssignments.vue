@@ -72,6 +72,9 @@
     import "@store/modules/CommonInformation";
     const commonState = namespace("CommonInformation");
 
+    import "@store/modules/AssignmentTypesInformation";
+    const assignmentTypesState = namespace("AssignmentTypesInformation");
+
 
     import { locationInfoType, commonInfoType } from '@/types/common';
     import { shiftRangeInfoType, selectShiftInfoType } from '@/types/ShiftSchedule/index';
@@ -86,6 +89,15 @@
         }
     })
     export default class ManageAssignments extends Vue {
+
+        @assignmentTypesState.Action
+        FetchAssignmentTypes!: () => Promise<any[]>;
+
+        @assignmentTypesState.Getter
+        getTypes!: any[];
+
+        @assignmentTypesState.Getter
+        getTypesDetailed!: { name: string; label: string; code: number; colorCode: string }[];
 
         @commonState.State
         public commonInfo!: commonInfoType;
@@ -119,8 +131,14 @@
         maxRank = 1000;
 
         dutyRostersJson: attachedDutyInfoType[] = [];
-        dutyColors2: { name: string; label: string; code: number; colorCode: string }[] = [];
-        isDutyColorsLoaded = false;
+
+        get dutyColors2() {
+            return this.getTypesDetailed;
+        }
+
+        get isDutyColorsLoaded() {
+            return this.getTypesDetailed.length > 0;
+        }
         
         fields: any[] = []
         originalFields = [
@@ -149,18 +167,6 @@
         // {                       
         //     //this.loadScheduleInformation();
         // }
-        fetchDutyColors2() {
-            const url = '/api/lookuptype/actives?category=Assignment';
-            this.$http.get(url)
-            .then(response => {
-                this.dutyColors2 = response.data.map(item => ({
-                name: item.name,
-                label: item.description,
-                code: item.code,
-                colorCode: item.displayColor
-                }));
-            })
-        }
         public getDutyRosters(startDate, endDate){            
             const url = 'api/dutyroster?locationId='+this.location.id+'&start='+startDate+'&end='+endDate;
             return this.$http.get(url)
@@ -178,7 +184,7 @@
         }        
 
         async loadScheduleInformation(allAssignments?) {
-            this.fetchDutyColors2()
+            await this.FetchAssignmentTypes();
             this.extractTableFields(allAssignments);
 
             this.UpdateSelectedShifts([]);

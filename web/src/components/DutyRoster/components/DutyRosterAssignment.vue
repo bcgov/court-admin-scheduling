@@ -386,12 +386,23 @@
     const commonState = namespace("CommonInformation");
     import "@store/modules/DutyRosterInformation";   
 	const dutyState = namespace("DutyRosterInformation");
+	import "@store/modules/AssignmentTypesInformation";
+	const assignmentTypesState = namespace("AssignmentTypesInformation");
 	import * as _ from 'underscore';
     import { localTimeInfoType, locationInfoType, userInfoType } from '@/types/common';
     import { assignmentCardInfoType, assignmentInfoType, assignmentSubTypeInfoType, dutyRangeInfoType} from '@/types/DutyRoster';
 
     @Component
     export default class DutyRosterAssignment extends Vue {
+
+        @assignmentTypesState.Action
+        FetchAssignmentTypes!: () => Promise<any[]>;
+
+        @assignmentTypesState.Getter
+        getTypes!: any[];
+
+        @assignmentTypesState.Getter
+        getTypeOptions!: { name: string; code: number; label: string }[];
 
         @Prop({required: true})
 		assignment!: assignmentCardInfoType;
@@ -456,39 +467,25 @@
 
 		weekDayNames = ['sunday','monday','tuesday','wednesday','thursday','friday','saturday'];
 
-		dayOptions = [
-			{name:'Sun', diff:0, enabled: true},
-			{name:'Mon', diff:1, enabled: true},
-			{name:'Tue', diff:2, enabled: true},
-			{name:'Wed', diff:3, enabled: true},
-			{name:'Thu', diff:4, enabled: true},
-			{name:'Fri', diff:5, enabled: true},
-			{name:'Sat', diff:6, enabled: true},
-		]
+	dayOptions = [
+		{name:'Sun', diff:0, enabled: true},
+		{name:'Mon', diff:1, enabled: true},
+		{name:'Tue', diff:2, enabled: true},
+		{name:'Wed', diff:3, enabled: true},
+		{name:'Thu', diff:4, enabled: true},
+		{name:'Fri', diff:5, enabled: true},
+		{name:'Sat', diff:6, enabled: true},
+	]
 
-		assignmentTypeOptions: { name: string; code: number; label: string }[] = [];
+	get assignmentTypeOptions() {
+		return this.getTypeOptions;
+	}
 
-		async fetchAssignmentTypeOptions() {
-			try {
-				const url = '/api/lookuptype/actives?category=Assignment';
-				const response = await this.$http.get(url);
-				this.assignmentTypeOptions = response.data.map(item => ({
-					name: item.name,
-					code: item.code,
-					label: item.description
-				}));
-			} catch (err) {
-				// handle error if needed
-				console.error('Error fetching assignment type options:', err);
-			}
-		}
-
-		assignmentSubTypeOptions = [] as assignmentSubTypeInfoType[];
-		assignmentError = false;
-		assignmentErrorMsg = '';
-		assignmentErrorMsgDesc = '';
-
-		assignmentToEdit = {} as assignmentInfoType;
+	assignmentSubTypeOptions = [] as assignmentSubTypeInfoType[];
+	assignmentError = false;
+	assignmentErrorMsg = '';
+	assignmentErrorMsgDesc = '';
+	assignmentToEdit = {} as assignmentInfoType;
 		originalAssignmentToEdit = {} as assignmentInfoType;
 
 		deleteErrorMsg = '';
@@ -506,7 +503,7 @@
 			this.assignmentTitle = Vue.filter('capitalize')(this.assignment.code);
             this.selectedExipryDate = this.localTime.timeString;
 			this.isDeleted = this.determineExpired();
-			await this.fetchAssignmentTypeOptions();
+			await this.FetchAssignmentTypes();
 		}
 
 		public determineExpired(){

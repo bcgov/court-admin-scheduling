@@ -6,6 +6,7 @@ import ManageTypesInformation from '@/store/modules/ManageTypesInformation';
 import ShiftScheduleInformation from '@/store/modules/ShiftScheduleInformation';
 import DutyRosterInformation from '@/store/modules/DutyRosterInformation';
 import AssignmentScheduleInformation from './modules/AssignmentScheduleInformation';
+import AssignmentTypesInformation from './modules/AssignmentTypesInformation';
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
@@ -15,7 +16,8 @@ const store = new Vuex.Store({
 		ManageTypesInformation,
 		ShiftScheduleInformation,
 		DutyRosterInformation,
-		AssignmentScheduleInformation
+		AssignmentScheduleInformation,
+		AssignmentTypesInformation
 	}
 })
 

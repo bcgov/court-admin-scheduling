@@ -91,6 +91,9 @@
     import "@store/modules/DutyRosterInformation";   
     const dutyState = namespace("DutyRosterInformation");
 
+    import "@store/modules/AssignmentTypesInformation";
+    const assignmentTypesState = namespace("AssignmentTypesInformation");
+
     import {locationInfoType, userInfoType, commonInfoType } from '@/types/common';
     import { assignmentCardInfoType, attachedDutyInfoType, dutyRangeInfoType, myTeamShiftInfoType, dutiesDetailInfoType, selectedDutyCardInfoType} from '@/types/DutyRoster';
     import { shiftInfoType } from '@/types/ShiftSchedule';
@@ -104,6 +107,12 @@
         }
     })
     export default class DutyRosterDayView extends Vue {
+
+        @assignmentTypesState.Action
+        FetchAssignmentTypes!: () => Promise<any[]>;
+
+        @assignmentTypesState.Getter
+        getDutyColorsForDayView!: { name: string; code: number; colorCode: string }[];
 
         @commonState.State
         public commonInfo!: commonInfoType;
@@ -174,22 +183,9 @@
             {name:'overtime',   colorCode:'#e85a0e'},
             {name:'free',       colorCode:'#e6d9e2'}                        
         ]
-        dutyColors2: { name: string; code?: string; colorCode: string }[] = []
 
-        async fetchDutyColors2() {
-            try {
-            const url = '/api/lookuptype/actives?category=Assignment';
-            const response = await this.$http.get(url);
-            this.dutyColors2 = response.data.map(item => ({
-                name: item.description,
-                code: item.code,
-                colorCode: item.displayColor
-            }));
-            this.dutyColors2.push({name:'overtime',   colorCode:'#e85a0e'});
-            this.dutyColors2.push({name:'free', colorCode:'#e6d9e2'});
-            } catch (err) {
-            // handle error if needed
-            }
+        get dutyColors2() {
+            return this.getDutyColorsForDayView;
         }
 
         @Watch('location.id', { immediate: true })
@@ -228,7 +224,7 @@
             this.runMethod.$on('getData', this.getData)        
             this.isDutyRosterDataMounted = false;
 
-            await this.fetchDutyColors2();
+            await this.FetchAssignmentTypes();
             await this.getData(this.scrollPositions);
             window.addEventListener('resize', this.getWindowHeight);
             this.getWindowHeight()

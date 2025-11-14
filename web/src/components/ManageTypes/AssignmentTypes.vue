@@ -157,6 +157,9 @@
     import "@store/modules/ManageTypesInformation";
     const manageTypesState = namespace("ManageTypesInformation");
 
+    import "@store/modules/AssignmentTypesInformation";
+    const assignmentTypesState = namespace("AssignmentTypesInformation");
+
     import PageHeader from "@components/common/PageHeader.vue"; 
     import AddAssignmentForm from "../ManageTypes/AddAssignmentForm.vue";
     
@@ -170,16 +173,26 @@
             PageHeader,
             AddAssignmentForm
         },
-        directives: {     
+        directives: {
             sortAssignmentType
         }
     })
     export default class AssignmentTypes extends Vue {
 
-        @commonState.State
-        public location!: locationInfoType;
+        @assignmentTypesState.Action
+        ClearAssignmentTypesCache!: () => void;
+
+        @assignmentTypesState.Action
+        FetchAssignmentTypes!: () => Promise<any[]>;
+
+        @assignmentTypesState.Getter
+        getTypes!: any[];
+
+        @assignmentTypesState.Getter
+        getTypeOptions!: { name: string; code: number; label: string }[];
 
         @commonState.State
+        public location!: locationInfoType;        @commonState.State
         public userDetails!: userInfoType;
 
         @manageTypesState.State
@@ -287,21 +300,19 @@
         }
 
         public async fetchAssignmentTypeTabs() {
-            const url = '/api/lookuptype/actives?category=Assignment';
             try {
-                const response = await this.$http.get(url);
-                    if (response.data && Array.isArray(response.data)) {
-                        this.assignmentTypeTabs = response.data.map((item: any) => ({
-                            name: item.name,
-                            code: item.code,
-                            label: item.description
-                        }));
-                        // Optionally set default selectedAssignmentType
-                        if (this.assignmentTypeTabs.length > 0) {
-                            this.selectedAssignmentType = this.assignmentTypeTabs[0];
-                            this.previousSelectedAssignmentType = this.assignmentTypeTabs[0];
-                        }
-                    }
+                await this.ClearAssignmentTypesCache();
+                await this.FetchAssignmentTypes();
+                this.assignmentTypeTabs = this.getTypes.map((item: any) => ({
+                    name: item.name,
+                    code: item.code,
+                    label: item.description
+                }));
+                // Optionally set default selectedAssignmentType
+                if (this.assignmentTypeTabs.length > 0) {
+                    this.selectedAssignmentType = this.assignmentTypeTabs[0];
+                    this.previousSelectedAssignmentType = this.assignmentTypeTabs[0];
+                }
             } catch (err) {
                 this.errorText = `Error fetching assignment types`;
                 this.openErrorModal = true;
@@ -409,6 +420,7 @@
                 .then(response => {
                     //console.log(response);
                     this.saveOrderFlag = true;
+                    this.ClearAssignmentTypesCache(); // Clear cache when assignment is deleted
                     this.getAssignments();
                     
                 }, err=>{
@@ -449,6 +461,7 @@
             
             this.$http(options)
                 .then(response => {
+                    this.ClearAssignmentTypesCache(); // Clear cache when assignment is saved
                     if(iscreate) 
                         this.addAssignmentToList(response.data);
                     else

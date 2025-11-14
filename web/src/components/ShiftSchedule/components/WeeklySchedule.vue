@@ -68,6 +68,9 @@
     import "@store/modules/CommonInformation";
     const commonState = namespace("CommonInformation");   
 
+    import "@store/modules/AssignmentTypesInformation";
+    const assignmentTypesState = namespace("AssignmentTypesInformation");
+
     import { locationInfoType } from '@/types/common';
     import { weekScheduleInfoType } from '@/types/ShiftSchedule/index';
     import WeeklyAssignmentCard from './WeeklyAssignmentCard.vue'    
@@ -79,6 +82,18 @@
     })
     export default class WeeklySchedule extends Vue {
 
+        @assignmentTypesState.Action
+        FetchAssignmentTypes!: () => Promise<any[]>;
+
+        @assignmentTypesState.Getter
+        getTypes!: any[];
+
+        @assignmentTypesState.Getter
+        getTypesWithColorCode!: { name: string; code: number; colorCode: string }[];
+
+        @assignmentTypesState.Getter
+        getAbbreviations!: { [key: string]: string };
+
         @Prop({required: true})
         courtAdminSchedules!: weekScheduleInfoType[];
 
@@ -88,30 +103,19 @@
         @Prop({default: false})
         isStaffView!: boolean;
 
-        dutyColors2: { name: string; code: number; colorCode: string }[] = [];
-        isDutyColorsLoaded = false;
+        get dutyColors2() {
+            return this.getTypesWithColorCode;
+        }
+
+        get isDutyColorsLoaded() {
+            return this.getTypesWithColorCode.length > 0;
+        }
 
         abbreviations: { [key: string]: string } = {};
 
-        mounted() {
-            this.fetchDutyColors2();
-        }
-        fetchDutyColors2() {
-            const url = '/api/lookuptype/actives?category=Assignment';
-            this.$http.get(url)
-            .then(response => {
-                this.dutyColors2 = response.data.map(item => ({
-                name: item.name,
-                code: item.code,
-                colorCode: item.displayColor
-                }));
-                // Fill abbreviations object
-                this.abbreviations = {};
-                response.data.forEach(item => {
-                this.abbreviations[item.name] = item.abbreviation || '';
-            });
-                this.isDutyColorsLoaded = true;
-            })
+        async mounted() {
+            await this.FetchAssignmentTypes();
+            this.abbreviations = this.getAbbreviations;
         }
 
         @commonState.State
