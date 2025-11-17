@@ -352,12 +352,24 @@
 
     import "@store/modules/DutyRosterInformation";   
     const dutyState = namespace("DutyRosterInformation");
+
+    import "@store/modules/AssignmentTypesInformation";
+    const assignmentTypesState = namespace("AssignmentTypesInformation");
 	
     import { locationInfoType, userInfoType } from '@/types/common';
     import { assignmentInfoType, assignmentSubTypeInfoType, dutyRangeInfoType} from '@/types/DutyRoster';
 	
 	@Component
 	export default class DutyRosterHeader extends Vue {
+
+        @assignmentTypesState.Action
+        FetchAssignmentTypes!: () => Promise<any[]>;
+
+        @assignmentTypesState.Getter
+        getTypes!: any[];
+
+        @assignmentTypesState.Getter
+        getTypeOptions!: { name: string; code: number; label: string }[];
 
         @commonState.State
         public location!: locationInfoType;
@@ -447,7 +459,9 @@
 			{name:'Sat', diff:6, enabled: true},
 		]
 
-		assignmentTypeOptions: { name: string; code: number; label: string }[] = [];
+		get assignmentTypeOptions() {
+			return this.getTypeOptions;
+		}
 
 		assignmentSubTypeOptions = [] as assignmentSubTypeInfoType[];
 		assignmentError = false;
@@ -455,28 +469,11 @@
 		assignmentErrorMsgDesc = '';
 
         mounted() {
-			this.fetchAssignmentTypeTabs()
+			this.FetchAssignmentTypes();
 			this.runMethod.$on('addassign', this.addAssignment)			
 			this.selectedDate = moment().format().substring(0,10);			
 			this.loadNewDateRange();
 		}
-
-		public async fetchAssignmentTypeTabs() {
-            const url = '/api/lookuptype/actives?category=Assignment';
-            try {
-                const response = await this.$http.get(url);
-                    if (response.data && Array.isArray(response.data)) {
-                        this.assignmentTypeOptions = response.data.map((item: any) => ({
-                            name: item.name,
-                            code: item.code,
-                            label: item.description
-                        }));
-                    }
-            } catch (err) {
-                this.errorText = `Error fetching assignment types`;
-                this.openErrorModal = true;
-            }
-        }
 		
 		public weekdaysChanged(){
 			Vue.nextTick(()=>{

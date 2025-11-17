@@ -86,6 +86,9 @@
     import "@store/modules/CommonInformation";
     const commonState = namespace("CommonInformation");
 
+    import "@store/modules/AssignmentTypesInformation";
+    const assignmentTypesState = namespace("AssignmentTypesInformation");
+
     import "@store/modules/DutyRosterInformation";   
     const dutyState = namespace("DutyRosterInformation");
 
@@ -96,6 +99,15 @@
     })
     export default class CourtAdminFuelGauge extends Vue {
        
+        @assignmentTypesState.Action
+        FetchAssignmentTypes!: () => Promise<any[]>;
+
+        @assignmentTypesState.Getter
+        getTypes!: any[];
+
+        @assignmentTypesState.Getter
+        getDutyColors!: { name: string; colorCode: string }[];
+
         @dutyState.State
         public shiftAvailabilityInfo!: myTeamShiftInfoType[];
 
@@ -124,34 +136,14 @@
         mounted()
         {
             //console.log(this.shiftAvailabilityInfo)
-            this.fetchDutyColors();
+            this.FetchAssignmentTypes();
             this.hasPermissionToAddAssignDuty = this.userDetails.permissions.includes("CreateAndAssignDuties");
             this.extractCourtAdminAvailability() 
         }
 
-        dutyColors: { name: string; colorCode: string }[] = [];
-        // dutyColors = [
-        //     {name:'court' , colorCode:'#189fd4'},
-        //     {name:'jail' ,  colorCode:'#A22BB9'},
-        //     {name:'transport', colorCode:'#ffb007'},
-        //     {name:'other',  colorCode:'#7a4528'},
-        //     {name:'overtime',colorCode:'#e85a0e'},
-        //     {name:'free',   colorCode:'#e6d9e2'}            
-        // ]
-        fetchDutyColors() {
-            const url = '/api/lookuptype/actives?category=Assignment';
-            this.$http.get(url)
-                .then((response: any) => {
-                    this.dutyColors = response.data.map((item: any) => ({
-                        name: item.description,
-                        colorCode: item.displayColor
-                    }));
-                    // Optionally add static colors if needed
-                    this.dutyColors.push({ name: 'overtime', colorCode: '#e85a0e' });
-                    this.dutyColors.push({ name: 'free', colorCode: '#e6d9e2' });
-               })
+        get dutyColors() {
+            return this.getDutyColors;
         }
-
         public extractCourtAdminAvailability(){
             this.myTeamMembers = [];
             for(const courtAdmin of this.shiftAvailabilityInfo){

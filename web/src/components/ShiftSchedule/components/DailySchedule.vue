@@ -125,12 +125,24 @@
     import "@store/modules/CommonInformation";
     const commonState = namespace("CommonInformation");    
 
+    import "@store/modules/AssignmentTypesInformation";
+    const assignmentTypesState = namespace("AssignmentTypesInformation");
+
     import { locationInfoType } from '@/types/common';
     import { distributeScheduleInfoType, distributeTeamMemberInfoType, dailyDistributeScheduleInfoType } from '@/types/ShiftSchedule/index';       
     import { manageAssignmentsScheduleInfoType, manageAssignmentDutyInfoType } from '@/types/DutyRoster';
 
     @Component
     export default class DailySchedule extends Vue {
+
+        @assignmentTypesState.Action
+        FetchAssignmentTypes!: () => Promise<any[]>;
+
+        @assignmentTypesState.Getter
+        getTypes!: any[];
+
+        @assignmentTypesState.Getter
+        getTypesDetailed!: { name: string; label: string; code: number; colorCode: string }[];
 
         @Prop({required: true})
         dailyCourtAdminSchedules!: distributeScheduleInfoType[];        
@@ -143,7 +155,9 @@
 
         isMounted = false;       
 
-        dutyColors2: { name: string; label: string; code: number; colorCode: string }[] = [];
+        get dutyColors2() {
+            return this.getTypesDetailed;
+        }
         
         courtAdminSchedules: dailyDistributeScheduleInfoType[] =[];    
 
@@ -156,7 +170,7 @@
 
         mounted() {
             this.isMounted = false;
-            this.fetchDutyColors2().then(() => {
+            this.FetchAssignmentTypes().then(() => {
                 this.extractCourtAdminEvents();
                 this.isMounted = true;
             });
@@ -165,18 +179,7 @@
         public sortEvents (events: any) {            
             return _.sortBy(events, "startTime");
         }
-        async fetchDutyColors2() {
-            const url = '/api/lookuptype/actives?category=Assignment';
-            await this.$http.get(url)
-            .then(response => {
-                this.dutyColors2 = response.data.map(item => ({
-                name: item.name,
-                label: item.description,
-                code: item.code,
-                colorCode: item.displayColor
-                }));
-            })
-        }
+
         public extractCourtAdminEvents(){
             this.courtAdminSchedules = []            
             for(const sherifschedule of this.dailyCourtAdminSchedules){
