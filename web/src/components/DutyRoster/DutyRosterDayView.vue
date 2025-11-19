@@ -466,7 +466,7 @@
 
             for (const color of this.dutyColors2) {
                 // Match by code (number or string)
-                if (color.code && typeStr === color.code.toString().toLowerCase()) {
+                if (color.code !== null && color.code !== undefined && typeStr === color.code.toString().toLowerCase()) {
                     return color;
                 }
                 // Match by name (case-insensitive)
