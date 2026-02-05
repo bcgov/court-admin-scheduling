@@ -204,8 +204,43 @@ namespace CAS.API.services.scheduling
                 shift.EndDate = shift.EndDate.TranslateDateForDaylightSavings(timezone, 7);
             }
 
-            var overlaps = await GetShiftConflicts(importedShifts);
-            var filteredImportedShifts = importedShifts.WhereToList(s => overlaps.All(o => o.Shift.Id != s.Id) &&
+            // Check for existing shifts in the target week to prevent duplicates
+            var existingShiftsInTargetWeek = await Db.Shift.AsNoTracking()
+                .Include(s => s.CourtAdmin)
+                .In(courtAdminIds, s => s.CourtAdminId)
+                .Where(s => s.LocationId == locationId &&
+                            s.ExpiryDate == null &&
+                            s.StartDate < targetEndDate && targetStartDate < s.EndDate)
+                .ToListAsync();
+
+            // Filter out shifts that would be duplicates
+            var nonDuplicateShifts = importedShifts.WhereToList(imported =>
+                !existingShiftsInTargetWeek.Any(existing =>
+                    existing.CourtAdminId == imported.CourtAdminId &&
+                    existing.StartDate == imported.StartDate &&
+                    existing.EndDate == imported.EndDate &&
+                    existing.LocationId == imported.LocationId));
+
+            // Filter out self-overlapping shifts (shifts that overlap with each other in the import batch)
+            var selfOverlappingShifts = new List<Shift>();
+            var nonOverlappingShifts = nonDuplicateShifts.WhereToList(shift =>
+            {
+                var hasOverlap = nonDuplicateShifts.Any(other =>
+                    shift != other &&
+                    other.StartDate < shift.EndDate &&
+                    shift.StartDate < other.EndDate &&
+                    shift.CourtAdminId == other.CourtAdminId);
+                
+                if (hasOverlap)
+                {
+                    selfOverlappingShifts.Add(shift);
+                }
+                
+                return !hasOverlap;
+            });
+
+            var overlaps = await GetShiftConflicts(nonOverlappingShifts);
+            var filteredImportedShifts = nonOverlappingShifts.WhereToList(s => overlaps.All(o => o.Shift.Id != s.Id) &&
                                                                          !overlaps.Any(ts =>
                                                                              s.Id != ts.Shift.Id && ts.Shift.StartDate < s.EndDate && s.StartDate < ts.Shift.EndDate &&
                                                                              ts.Shift.CourtAdminId == s.CourtAdminId));
@@ -214,9 +249,24 @@ namespace CAS.API.services.scheduling
             await Db.Shift.AddRangeAsync(filteredImportedShifts);
             await Db.SaveChangesAsync();
 
+            // Add informative messages about duplicates and self-overlaps that were skipped
+            var duplicateCount = importedShifts.Count - nonDuplicateShifts.Count;
+            var selfOverlapCount = selfOverlappingShifts.Distinct().Count();
+            var conflictMessages = overlaps.SelectMany(o => o.ConflictMessages).ToList();
+            
+            if (duplicateCount > 0)
+            {
+                conflictMessages.Insert(0, $"{duplicateCount} shift(s) were skipped because they already exist in the target week.");
+            }
+            
+            if (selfOverlapCount > 0)
+            {
+                conflictMessages.Insert(0, $"{selfOverlapCount} shift(s) were skipped because they overlap with other shifts being imported.");
+            }
+
             return new ImportedShifts
             {
-                ConflictMessages = overlaps.SelectMany(o => o.ConflictMessages).ToList(),
+                ConflictMessages = conflictMessages,
                 Shifts = filteredImportedShifts
             };
         }
